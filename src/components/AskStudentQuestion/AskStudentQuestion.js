@@ -35,7 +35,6 @@ export default class AskStudentQuestion extends React.Component {
 
   startTimer(duration) {
     var me = this;
-    var counter;
     counter = setInterval(timer, 1000); //1000 will run it every 1 second
 
     function timer() {
@@ -250,3 +249,5 @@ export default class AskStudentQuestion extends React.Component {
     )
   }
 }
+
+var counter;

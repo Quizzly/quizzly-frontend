@@ -20,7 +20,6 @@ export default class StudentQuestionModal extends React.Component {
   componentDidMount() {
     Api.db.find('studentanswer', {question: this.props.question.id, student: Session.user.id})
     .then((studentAnswer) => {
-      console.log("studentAnswer>>>>>>>>", studentAnswer);
       this.setState({studentAnswer: studentAnswer[0]});
     });
   }
