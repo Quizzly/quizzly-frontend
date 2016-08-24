@@ -75,12 +75,15 @@ export default class Entrance extends React.Component {
         return;
       }
 
-      Api.server.post('signup', {
+      Api.db.post('signup', {
         email: email,
         password: password,
         firstName: firstName,
         lastName: lastName,
         isProfessor: isProfessor
+      })
+      .then((user) => {
+        return Api.server.post('login', user);
       })
       .then((user) => {
         console.log("User is logged in", user);
