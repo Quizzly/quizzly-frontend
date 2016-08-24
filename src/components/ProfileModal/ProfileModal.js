@@ -33,11 +33,11 @@ export default class ProfileModal extends React.Component {
     switch (user.type) {
       case 'STUDENT':
         newUser.studentId = user.studentId;
-        route = '/student' + route;
+        route = 'student' + route;
         break;
       case 'PROFESSOR':
         newUser.facultyId = user.facultyId;
-        route = '/professor' + route;
+        route = 'professor' + route;
         break;
     }
 

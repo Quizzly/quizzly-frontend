@@ -26,7 +26,7 @@ class Route {
 
     return $.post(this.baseUrl + model + findUrl, data);
   }
-  update(model, data, id) {
+  update(model, id, data) {
     if(arguments.length == 2){
       return $.post(this.baseUrl + model + '/update', data);
     }

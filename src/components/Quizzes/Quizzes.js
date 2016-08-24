@@ -6,6 +6,7 @@ import AddQuestionBody from 'AddQuestionBody/AddQuestionBody.js'
 import AddStudentsBody from 'AddStudentsBody/AddStudentsBody.js'
 import Modal from 'Modal/Modal.js'
 import Api from 'modules/Api.js'
+import Promise from 'bluebird'
 
 export default class Quizzes extends React.Component {
   static propTypes = {

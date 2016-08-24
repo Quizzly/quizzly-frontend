@@ -1,7 +1,9 @@
 import s from 'Layout/Layout.scss'
+import {browserHistory} from 'react-router'
 import Sidebar from 'Sidebar/Sidebar.js'
 import Header from 'Header/Header.js'
 import ProfileModal from 'ProfileModal/ProfileModal.js'
+import Session from 'modules/Session.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
 
@@ -264,54 +266,43 @@ export default class Layout extends React.Component {
     var me = this;
     // this.initPush();
     // this.checkSession()
-    Api.db.findOne('professor', 1)
-    .then((user) => {
-      //TODO: might not be able to be /PROFESSOR/find/:id
-      console.log("user", user);
-      return Api.db.findOne(user.type, 1)
-    })
-    .then((user) => {
-      console.log('user', user);
-      switch(user.type) {
-        case 'STUDENT':
-          this.addPusherListener();
-          var courseIds = [];
-          user.sections.map(function(section) {
-            courseIds.push(section.course);
-          });
-          Api.db.post('course/multifind', {ids: courseIds})
-          .then((courses) => {
-            console.log('courseIds', courseIds);
-            console.log('courses', courses);
-            if(courses[0] != undefined) {
-              this.getCourseById(courses[0].id);
-              this.getTermsFromCourses(courses);
-            }
-            user.courses = courses;
-            this.setState({user: user});
-          });
-          break;
-        case 'PROFESSOR':
-          if(user.courses[0] != undefined) {
-            this.getCourseById(user.courses[0].id);
-            this.getTermsFromCourses(user.courses);
+    // Api.db.findOne('professor', 1)
+    // .then((user) => {
+    //   //TODO: might not be able to be /PROFESSOR/find/:id
+    //   console.log("user", user);
+    //   return Api.db.findOne(user.type, 1)
+    // })
+    // .then((user) => {
+    var user = Session.user;
+    console.log('user', user);
+    switch(user.type) {
+      case 'STUDENT':
+        this.addPusherListener();
+        var courseIds = [];
+        user.sections.map((section) => {
+          courseIds.push(section.course);
+        });
+        Api.db.post('course/multifind', {ids: courseIds})
+        .then((courses) => {
+          console.log('courseIds', courseIds);
+          console.log('courses', courses);
+          if(courses[0] != undefined) {
+            this.getCourseById(courses[0].id);
+            this.getTermsFromCourses(courses);
           }
+          user.courses = courses;
           this.setState({user: user});
-          break;
-      }
-    });
-  }
-
-  checkSession() {
-    return $.post('/session')
-    .then(function(user) {
-      console.log(user);
-      return user;
-    })
-    .fail(function() {
-      console.log("redirecting to entrance...");
-      browserHistory.push('/entrance');
-    });
+        });
+        break;
+      case 'PROFESSOR':
+        if(user.courses[0] != undefined) {
+          this.getCourseById(user.courses[0].id);
+          this.getTermsFromCourses(user.courses);
+        }
+        this.setState({user: user});
+        break;
+    }
+    // });
   }
 
   render() {

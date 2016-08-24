@@ -1,5 +1,6 @@
 import s from 'AddStudentsBody/AddStudentsBody.scss'
 import Api from 'modules/Api.js'
+import Utility from 'modules/Utility.js'
 
 export default class AddStudentsBody extends React.Component {
   static propTypes = {
@@ -47,7 +48,7 @@ export default class AddStudentsBody extends React.Component {
       <div className="addStudentsBodyContainer">
         <div className="p20">
           <div className="">
-            <div className="pb10 alignC">Add a student's email per line in section: {pr.section.title}</div>
+            <div className="pb10 alignC">Add one student email per line in section: {pr.section.title}</div>
             <textarea
               className="normalInput centerBlock alignC pr20"
               placeholder="Student emails..."

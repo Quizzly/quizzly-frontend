@@ -1,10 +1,13 @@
 import s from 'StudentQuizzes/StudentQuizzes.scss'
 import StudentQuiz from 'StudentQuiz/StudentQuiz.js'
 import StudentQuestionModal from 'StudentQuestionModal/StudentQuestionModal.js'
+import Api from 'modules/Api.js'
+import Utility from 'modules/Utility.js'
 
 export default class StudentQuizzes extends React.Component {
   static propTypes = {
     course: React.PropTypes.object.isRequired,
+    student: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -43,10 +46,10 @@ export default class StudentQuizzes extends React.Component {
     var quizIds = [];
     var studentAnswers = [];
     Api.db.find('studentanswer', {course: courseId, student: this.props.student.id})
-    .then(function(studentAnswersResponse) {
+    .then((studentAnswersResponse) => {
       // console.log("studentAnswers", studentAnswers);
       studentAnswers = studentAnswersResponse;
-      studentAnswers.map(function(studentAnswer) {
+      studentAnswers.map((studentAnswer) => {
         quizIds.push(studentAnswer.quiz.id);
       });
       console.log(quizIds);
@@ -55,35 +58,51 @@ export default class StudentQuizzes extends React.Component {
       console.log(quizIds);
       return Api.db.post('quiz/getQuizzesByQuizIds', {quizIds: quizIds});
     })
-    .then(function(quizzes) {
+    .then((quizzes) => {
       console.log("quizzes", quizzes);
       console.log("studentAnswers", studentAnswers);
-      quizzes.map(function(quiz) {
+      quizzes.map((quiz) => {
         quiz.studentAnswers = [];
         return quiz;
       });
 
-      studentAnswers.map(function(studentAnswer) {
-        quizzes.map(function(quiz) {
+      studentAnswers.map((studentAnswer) => {
+        quizzes.map((quiz) => {
           if(studentAnswer.quiz.id == quiz.id) {
             return quiz.studentAnswers.push(studentAnswer);
           }
         });
       });
       console.log("new quizzes", quizzes);
-      me.setState({studentQuizzes: quizzes});
+      this.setState({studentQuizzes: quizzes});
     });
   }
 
   showModal(question) {
-    this.setState({
-      showModal: true,
-      modalQuestion: question
+    Api.db.findOne('question', question.id)
+    .then((question) => {
+      this.setState({
+        showModal: true,
+        modalQuestion: question
+      });
     });
   }
 
   closeModal() {
     this.setState({showModal: false});
+  }
+
+  renderStudentQuizzes() {
+    return this.state.studentQuizzes.map((studentQuiz, i) => {
+      return (
+        <StudentQuiz
+          key={i}
+          studentQuiz={studentQuiz}
+          studentQuizIndex={i}
+          showModal={this.showModal.bind(this)}
+        />
+      );
+    });
   }
 
   render() {
@@ -92,16 +111,7 @@ export default class StudentQuizzes extends React.Component {
     return (
       <div className="studentQuizzesContainer">
         <div id="quizzes" className="p20 quizzlyContent">
-          {st.studentQuizzes.map(function(studentQuiz, studentQuizIndex) {
-            return (
-              <StudentQuiz
-                studentQuiz={studentQuiz}
-                key={studentQuizIndex}
-                studentQuizIndex={studentQuizIndex}
-                showModal={this.showModal.bind(this)}
-              />
-            );
-          }, this)}
+          {this.renderStudentQuizzes()}
         </div>
         {st.showModal ?
           <StudentQuestionModal

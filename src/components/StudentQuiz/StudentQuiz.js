@@ -1,9 +1,12 @@
 import s from 'StudentQuiz/StudentQuiz.scss'
 import StudentQuestion from 'StudentQuestion/StudentQuestion.js'
+import Panel from 'elements/Panel/Panel.js'
 
 export default class StudentQuiz extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    studentQuiz: React.PropTypes.object.isRequired,
+    studentQuizIndex: React.PropTypes.number.isRequired,
+    showModal: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -21,7 +24,7 @@ export default class StudentQuiz extends React.Component {
   calculateCorrectAnswers() {
     var studentAnswers = this.props.studentQuiz.studentAnswers;
     var numCorrect = 0;
-    studentAnswers.map(function(studentAnswer) {
+    studentAnswers.map((studentAnswer) => {
       if(studentAnswer.answer == undefined || studentAnswer.answer.correct) {
         numCorrect++;
       }
@@ -29,31 +32,36 @@ export default class StudentQuiz extends React.Component {
     return numCorrect;
   }
 
+  renderStudentAnswersToQuizzes() {
+    var pr = this.props;
+    return pr.studentQuiz.studentAnswers.map((studentAnswer, i) => {
+      return (
+        <StudentQuestion
+          key={i}
+          studentQuizIndex={pr.studentQuizIndex}
+          studentAnswerIndex={i}
+          studentAnswer={studentAnswer}
+          showModal={pr.showModal.bind(this)}
+        />
+      );
+    });
+  }
+
+  renderStudentScore() {
+    return (
+      <div>{this.calculateCorrectAnswers() + "/" + this.props.studentQuiz.studentAnswers.length}</div>
+    );
+  }
+
   render() {
     var st = this.state;
     var pr = this.props;
     return (
-      <div className="studentQuizContainer">
-        <div className="scrollRegion">
-          <div className="header">
-            <span className="pointer">{pr.studentQuiz.title}</span>
-            </div>
-          <div className="body">
-            {pr.studentQuiz.studentAnswers.map(function(studentAnswer, studentAnswerIndex) {
-              return (
-                <StudentQuestion
-                  key={studentAnswerIndex}
-                  studentQuizIndex={pr.studentQuizIndex}
-                  studentAnswerIndex={studentAnswerIndex}
-                  studentAnswer={studentAnswer}
-                  showModal={pr.showModal.bind(this)}
-                />
-              );
-            }, this)}
-          </div>
-          <div className="studentFooterButton">{this.calculateCorrectAnswers() + "/" + pr.studentQuiz.studentAnswers.length}</div>
-        </div>
-      </div>
+      <Panel
+        header={<span className="pointer">{pr.studentQuiz.title}</span>}
+        body={this.renderStudentAnswersToQuizzes()}
+        footer={<div className="studentQuizFooter">{this.renderStudentScore()}</div>}
+      />
     )
   }
 }

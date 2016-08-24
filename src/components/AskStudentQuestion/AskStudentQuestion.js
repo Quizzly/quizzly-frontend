@@ -1,4 +1,7 @@
 import s from 'AskStudentQuestion/AskStudentQuestion.scss'
+import {browserHistory} from 'react-router'
+import Api from 'modules/Api.js'
+import Utility from 'modules/Utility.js'
 
 export default class AskStudentQuestion extends React.Component {
   static propTypes = {
@@ -32,7 +35,8 @@ export default class AskStudentQuestion extends React.Component {
 
   startTimer(duration) {
     var me = this;
-    counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+    var counter;
+    counter = setInterval(timer, 1000); //1000 will run it every 1 second
 
     function timer() {
       duration--;
@@ -132,7 +136,7 @@ export default class AskStudentQuestion extends React.Component {
     console.log(">>>>>>>>>> selecting answer");
     var question = this.state.question;
     var selectedAnswer = {};
-    question.answers.map(function(answer) {
+    question.answers.map((answer) => {
       console.log(">>>>>>>>>> answer in each loop", answer);
       if(answer.isSelected) {
         console.log(">>>>>>>>>> answer that is selected", answer);
@@ -144,7 +148,6 @@ export default class AskStudentQuestion extends React.Component {
 
   submitAnswer() {
     console.log("submitting answer!");
-    var me = this;
     var currentUser = {};
     var quiz = this.state.question.quiz;
     var question = this.state.question;
@@ -159,9 +162,8 @@ export default class AskStudentQuestion extends React.Component {
         break;
     }
 
-    console.log("??????????? final answer selected", answer);
     Api.db.post('section/getSectionByStudentAndCourse', {studentId: student.id, courseId: quiz.course})
-    .then(function(section) {
+    .then((section) => {
       return Api.db.create('studentanswer', {
         student: student.id,
         course: quiz.course,
@@ -169,14 +171,56 @@ export default class AskStudentQuestion extends React.Component {
         quiz: quiz.id,
         question: question.id,
         answer: answer.id,
-        text: me.state.freeResponseAnswer
+        text: this.state.freeResponseAnswer
       });
     })
-    .then(function(studentAnswer) {
+    .then((studentAnswer) => {
       console.log("studentAnswer saved", studentAnswer);
       clearInterval(counter);
       browserHistory.push('/s/quizzes');
     });
+  }
+
+  renderMultipleChoiceSection() {
+    return this.state.question.answers.map((answer, answerIndex) => {
+      return (
+        <div className="row answerRow" key={answerIndex}>
+          <div className="columns one pt10">{answer.option + ".)"}</div>
+          <div className="columns eleven">
+            <div
+              className={`answer ${answer.isSelected ? " selected" : ""}`}
+              onClick={this.handleSelectedAnswer.bind(this, answerIndex)}
+            >
+              {answer.text}
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+
+  renderFreeResponseSection() {
+    var st = this.state;
+    return (
+      <div className="pl20 pr20">
+        <textarea
+          className="freeResponse"
+          value={st.freeResponseAnswer}
+          onChange={this.handleFreeResponseChange.bind(this)}
+        />
+        <div className="charCount">{st.freeResponseAnswer.length}</div>
+      </div>
+    );
+  }
+
+  renderAnswerSection() {
+    var st = this.state;
+    switch(st.question.type) {
+      case "multipleChoice":
+        return this.renderMultipleChoiceSection();
+      case "freeResponse":
+        return this.renderFreeResponseSection();
+    }
   }
 
   render() {
@@ -194,36 +238,13 @@ export default class AskStudentQuestion extends React.Component {
           <div className="quizTitle">{(st.question.quiz.title + "").toUpperCase()}</div>
           <div className="question">{st.question.text}</div>
           <div className="questionBorder"></div>
-          {(() => {
-            switch(st.question.type) {
-              case "multipleChoice":
-                return st.question.answers.map(function(answer, answerIndex) {
-                  return (
-                    <div className="row answerRow" key={answerIndex}>
-                      <div className="columns one pt10">{answer.option + ".)"}</div>
-                      <div className="columns eleven">
-                        <div className={"answer" + (answer.isSelected ? " selected" : "")} onClick={this.handleSelectedAnswer.bind(this, answerIndex)}>{answer.text}</div>
-                      </div>
-                    </div>
-                  );
-                });
-                break;
-              case "freeResponse":
-                return (
-                  <div className="pl20 pr20">
-                    <textarea
-                      className="freeResponse"
-                      value={st.freeResponseAnswer}
-                      onChange={this.handleFreeResponseChange.bind(this)}
-                    />
-                    <div className="charCount">{st.freeResponseAnswer.length}</div>
-                  </div>
-                );
-                break;
-            }
-          })()}
-
-          <div className="submit" onClick={this.submitAnswer.bind(this)}>SUBMIT</div>
+          {this.renderAnswerSection()}
+          <div
+              className="submit"
+              onClick={this.submitAnswer.bind(this)}
+            >
+              SUBMIT
+            </div>
         </div>
       </div>
     )

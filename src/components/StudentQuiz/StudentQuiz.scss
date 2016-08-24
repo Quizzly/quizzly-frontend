@@ -1,5 +1,10 @@
 @import "~assets/scss/vars.scss";
 
-.studentQuizContainer {
+.studentQuizContainer {}
 
+.studentQuizFooter {
+  padding: 10px;
+  text-align: center;
+  background-color: $lightBlue;
+  @include roundBottom;
 }

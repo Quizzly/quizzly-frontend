@@ -16,19 +16,35 @@ import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
 
 function checkSession(nextState, replace, callback) {
+  console.log("sessoin");
   Api.server.post('session')
   .then((user) => {
-    if (!user) { // if login fails
+    console.log("trying to session", user);
+    if(!user) { // if login fails
       replace({
-        pathname: '/login',
+        pathname: '/entrance',
         state: { nextPathname: nextState.location.pathname }
       });
+      callback();
+    } else { // if login succeeds
+      var route = 'professor';
+      switch(user.type) {
+        case "STUDENT":
+          route = 'student';
+        break;
+        case "PROFESSOR":
+          route = 'professor';
+        break;
+      }
+
+      Api.db.findOne(route, user.id)
+      .then((user) => {
+        console.log("full user?", user);
+        Session.user = user;
+        callback();
+        // console.log('Admin Login? ', Session.isAdmin());
+      });
     }
-    else { // if login succeeds
-      Session.user = user;
-      console.log('Admin Login? ', Session.isAdmin());
-    }
-    callback();
   });
 }
 

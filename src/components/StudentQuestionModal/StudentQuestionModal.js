@@ -1,106 +1,94 @@
 import s from 'StudentQuestionModal/StudentQuestionModal.scss'
+import Modal from 'Modal/Modal.js'
+import Api from 'modules/Api.js'
+import Session from 'modules/Session.js'
 
 export default class StudentQuestionModal extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    question: React.PropTypes.object.isRequired,
+    closeModal: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
 
-    var question = props.question;
-    question.answers = [];
-
     this.state = {
-      isFreeResponse: false,
-      question: question,
+      studentAnswer: {}
     };
   }
 
-  componentWillMount() {
-    var me = this;
-    if(this.state.question == undefined) {
-      return;
+  componentDidMount() {
+    Api.db.find('studentanswer', {question: this.props.question.id, student: Session.user.id})
+    .then((studentAnswer) => {
+      console.log("studentAnswer>>>>>>>>", studentAnswer);
+      this.setState({studentAnswer: studentAnswer[0]});
+    });
+  }
+
+  chooseAnswerStatus(answer) {
+    if(answer.correct) {
+      return "correctAnswer";
     }
 
-    Api.db.findOne('question', this.state.question.id)
-    .then((question) => {
-      console.log("StudentQuestionModal::question", question);
-      this.setState({
-        question: question,
-        isFreeResponse: question.type == "freeResponse" ? true : false,
-      });
-    });
+    if(this.state.studentAnswer.answer && answer.id == this.state.studentAnswer.answer.id) {
+      return "wrongAnswer";
+    }
   }
 
-  showMultipleChoice() {
-    var question = this.state.question;
-    question.type = "multipleChoice";
-    this.setState({
-      isFreeResponse: false,
-      question: question
-    });
+  renderModalBody() {
+    return (
+      <div id="addQuestionBody">
+        <div className="p20">
+          <div className="flex mb20 flexVertical">
+            <input
+              type="text"
+              className="addCourseInput"
+              placeholder="Question..."
+              value={this.props.question.text}
+              disabled
+            />
+          </div>
+          {this.props.question.answers.map((answer, answerIndex) => {
+            return (
+              <div className="flex mb20 flexVertical" key={answerIndex}>
+                <span className="mr15">{answer.option}.)</span>
+                <input
+                  type="text"
+                  className={`addCourseInput ${this.chooseAnswerStatus(answer)}`}
+                  value={answer.text}
+                  placeholder="Option..."
+                  disabled
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   }
 
-  setAsCorrectAnswer(answerIndex) {
-    var question = this.state.question;
-    question.answers.map(function(answer) { return answer.correct = false });
-    question.answers[answerIndex].correct = true;
-    this.setState({question: question});
+  renderModalTitle() {
+    var question = this.props.question;
+    switch(question.type) {
+      case "multipleChoice":
+        return `Multiple Choice Question From Quiz: ${question.quiz.title}`;
+      case "freeResponse":
+        return `Free Response Question From Quiz: ${question.quiz.title}`;
+      default:
+        return "Question type unknown";
+    }
   }
-
-  correctAnswerIsSet(question) {
-    var correctAnswerIsSet = false;
-    question.answers.map(function(answer) {
-      if(answer.correct) {
-        correctAnswerIsSet = true;
-      }
-    });
-
-    return correctAnswerIsSet;
-  }
-
 
   render() {
     var st = this.state;
     var pr = this.props;
     return (
       <div className="studentQuestionModalContainer">
-        <div id="modal">
-          <div id="header">
-            Your Question
-            <span className="floatR pointer" onClick={this.props.closeModal.bind(this)}><img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}}/></span>
-          </div>
-          <div id="body">
-            <div id="addQuestionBody">
-              <div className="p20">
-                <div className="flex mb20 flexVertical">
-                  <input
-                    type="text"
-                    className="addCourseInput"
-                    placeholder="Question..."
-                    value={this.state.question.text}
-                    disabled={true}
-                  />
-                </div>
-                {this.state.question.answers.map(function(answer, answerIndex) {
-                  return (
-                    <div className="flex mb20 flexVertical" key={answerIndex}>
-                      <span className="mr15 greenButton" onClick={me.setAsCorrectAnswer.bind(me, answerIndex)}>{answer.option}.)</span>
-                      <input
-                        type="text"
-                        className={"addCourseInput " + (answer.correct ? "lightGreenBackground" : "")}
-                        value={answer.text}
-                        placeholder="Option..."
-                        disabled={true}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
+        <Modal
+          title={this.renderModalTitle()}
+          body={this.renderModalBody()}
+          closeModal={pr.closeModal.bind(this)}
+        />
       </div>
     )
   }
