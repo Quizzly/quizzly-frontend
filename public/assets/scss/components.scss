@@ -1,0 +1,134 @@
+@import "vars";
+
+.dropdown {
+  background-color: white;
+  height: 39px;
+  @include p;
+  width: 180px;
+}
+
+.mainDropdown {
+  @extend .dropdown;
+  position: absolute;
+  top: 9px;
+  width: 160px;
+}
+
+.semesterDropdown {
+  @extend .dropdown;
+  position: absolute;
+  top: 9px;
+  margin-left: 170px;
+  width: 160px;
+}
+
+button, .button {
+  @include greenBlueGradient;
+  @include mont;
+  @include outerShadow;
+  padding: 15px 20px;
+  color: white;
+  cursor: pointer;
+  border: $radius;
+  font-weight: 700;
+  border: none;
+}
+
+.quizzlyContent {
+  overflow-x: auto;
+  padding: 20px;
+  white-space: nowrap;
+  height: calc(100vh - 98px);
+  margin-left: 192px;
+}
+
+.addEntityButton {
+  cursor: pointer;
+  @include outerShadow;
+  width: 240px;
+  background-color: $lightBlue;
+  @include p;
+  font-weight: 500;
+  border-radius: $radius;
+  vertical-align: top;
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+  &:hover {
+    background-color: darken($lightBlue, 5%);
+  }
+}
+
+.normalInput {
+  background-color: $lightestGray;
+  border: none;
+  border-radius: $radius;
+  @include p;
+  padding-left: 15px; padding-top: 13px; padding-bottom: 13px;
+  @include innerShadow;
+  box-sizing: border-box;
+}
+
+.modalButton {
+  width: 100%;
+  @include greenBlueGradient;
+  color: $white;
+  @include mont;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: $radius;
+  @include outerShadow;
+  font-weight: 700;
+  border: none;
+}
+
+.greenButton {
+  text-align: center;
+  cursor: pointer;
+  border-radius: $radius;
+  border: $solidBorder;
+  background-color: $lightGreen;
+  padding: 10px;
+  flex-shrink: 0;
+  &:hover {
+    background-color: darken($lightGreen, 5%) !important;
+  }
+}
+
+.plusButton {
+  @extend .greenButton;
+  font-weight: 500;
+  width: 26px;
+}
+
+.footerButton {
+  text-align: center;
+  cursor: pointer;
+  margin-top: -1px;
+  @include roundBottom;
+  @include borderTop;
+  background-color: $lightGreen;
+  padding: 10px;
+  font-weight: 500;
+  &:hover {
+    background-color: darken($lightGreen, 5%) !important;
+  }
+}
+
+.addCourseInput {
+  background-color: $lightestGray;
+  border: none;
+  border-radius: $radius;
+  @include p;
+  padding-left: 15px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  @include innerShadow;
+  width: 100%;
+}
+
+.entranceInput {
+
+}

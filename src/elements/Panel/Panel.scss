@@ -1,0 +1,51 @@
+@import "~assets/scss/vars.scss";
+
+.panelContainer {
+  @include outerShadow;
+  width: 260px;
+  background-color: $white;
+  @include p;
+  margin-right: 20px;
+  border-radius: $radius;
+  vertical-align: top;
+  display: inline-block;
+  // max-height: 100%;
+
+  .panelHeader {
+    @include roundTop;
+    background-color: $lightBlue;
+    @include h6;
+    padding: 10px;
+    @include borderBottom;
+    white-space: normal;
+  }
+
+  .panelItem {
+    @include small;
+    @include borderBottom;
+    padding: 10px;
+    font-size: 13px;
+    white-space: normal;
+    overflow: auto;
+    &:hover {
+      background-color: $lightestGray;
+    }
+  }
+
+  .panelFooter {
+    @include roundBottom;
+    @include borderTop;
+    margin-top: -1px;
+    background-color: $lightGreen;
+    &:hover {
+      background-color: darken($lightGreen, 5%) !important;
+    }
+  }
+
+  .panelFooterButton {
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,36 @@
+@import "~assets/scss/vars.scss";
+
+.sidebarContainer {
+  background-color: $lightGreen;
+  float: left;
+  @include borderRight;
+  text-align: center;
+  width: 192px;
+  height: 100vh;
+  // @include outerShadow;
+  z-index: 100;
+  // position: relative;
+
+  .quizzlyLogo {
+    @include greenBlueGradient;
+    @include flexCenter;
+    @include borderBottom;
+    text-align: center;
+    color: $white;
+    margin-bottom: 30px;
+    height: 57px;
+  }
+
+  .sidebarElement {
+    @include p;
+    margin-top: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: block;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
