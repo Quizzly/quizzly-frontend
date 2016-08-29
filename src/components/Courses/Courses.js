@@ -1,6 +1,6 @@
 import s from 'Courses/Courses.scss'
 import Course from 'Course/Course.js'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
 import AddCourseBody from 'AddCourseBody/AddCourseBody.js'
 import AddQuizBody from 'AddQuizBody/AddQuizBody.js'
 import AddQuestionBody from 'AddQuestionBody/AddQuestionBody.js'

@@ -1,5 +1,4 @@
-import s from 'MetricModal/MetricModal.scss'
-
+import s from 'elements/MetricModal/MetricModal.scss'
 
 var donutSettings = {
   responsive: true,

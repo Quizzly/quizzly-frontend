@@ -1,5 +1,5 @@
 import s from 'ProfileModal/ProfileModal.scss'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
 import Utility from 'modules/Utility.js'
 import Api from 'modules/Api.js'
 

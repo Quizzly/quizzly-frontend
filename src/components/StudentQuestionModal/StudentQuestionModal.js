@@ -1,5 +1,5 @@
 import s from 'StudentQuestionModal/StudentQuestionModal.scss'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
 import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
 

@@ -1,4 +1,4 @@
-import s from 'Modal/Modal.scss'
+import s from 'elements/Modal/Modal.scss'
 import Utility from 'modules/Utility.js'
 
 export default class Modal extends React.Component {
