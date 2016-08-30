@@ -160,7 +160,7 @@ export default class Layout extends React.Component {
     return Api.db.create('course', {title: course.title, professor: this.state.user.id, sections: course.sections, term: term.id})
     .then((course) => {
       console.log("created course", course);
-      var user = me.state.user;
+      var user = this.state.user;
       course.quizzes = [];
       course.sections = [];
 
