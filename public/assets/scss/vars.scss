@@ -111,6 +111,18 @@ $mont: 'Montserrat', sans-serif;
   color: $white;
 }
 
+@mixin normalInput {
+  background-color: $lightestGray;
+  border: none;
+  border-radius: $radius;
+  @include p;
+  padding-left: 15px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  @include innerShadow;
+  width: 100%;
+}
+
 // text styles
 
 @mixin h1 {

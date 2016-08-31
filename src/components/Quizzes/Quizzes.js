@@ -82,6 +82,9 @@ export default class Quizzes extends React.Component {
 
   addQuizToCourse(quiz, quizIndex) {
     console.log("Adding quiz '" +  quiz.title + "' in course " + this.props.course.title);
+    if(quiz.title.length == 0) {
+      return;
+    }
     if(quizIndex > -1) {
       Api.db.update('quiz', quiz.id, { title: quiz.title })
       .then((quiz) => {

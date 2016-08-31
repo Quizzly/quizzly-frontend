@@ -1,14 +1,11 @@
 import s from 'Profile/Profile.scss'
 import React from 'react'
-import Quiz from '../partials/Quiz.js'
-import Modal from '../partials/Modal.js'
+import Input from 'elements/Input/Input.js'
 import { browserHistory } from 'react-router'
-
-var Promise = require('bluebird');
 
 export default class Profile extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    // dummy: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -24,21 +21,39 @@ export default class Profile extends React.Component {
   }
 
   getUserFromSession() {
-    var me = this;
     $.post('/session')
-    .then(function(user) {
-      me.setState({user: user});
+    .then((user) => {
+      this.setState({user: user});
     })
     .fail(function() {
       browserHistory.push('/entrance');
     });
   }
 
-  handleChange(i, event) {
+  inputChange(input, value) {
     var user = this.state.user;
-    user[i] = event.target.value;
-
+    user[input] = value;
     this.setState({user: user});
+  }
+
+  studentIdChange(value) {
+    this.inputChange('studentId', value);
+  }
+
+  facultyIdChange(value) {
+    this.inputChange('facultyId', value);
+  }
+
+  firstNameChange() {
+    this.inputChange('firstName', value);
+  }
+
+  lastNameChange() {
+    this.inputChange('lastName', value);
+  }
+
+  emailChange() {
+    this.inputChange('email', value);
   }
 
   updateUser() {
@@ -57,9 +72,29 @@ export default class Profile extends React.Component {
     }
 
     Api.db.post(route, newUser)
-    .then(function(user) {
+    .then((user) => {
       console.log("updated user: ", user);
     });
+  }
+
+  renderDynamicInputs() {
+    var st = this.state;
+    switch (st.user.type) {
+      case 'STUDENT':
+        return <Input
+            type="text"
+            value={st.user.studentId}
+            placeholder="ID"
+            onChange={this.studentIdChange.bind(this)}
+          />;
+      case 'PROFESSOR':
+        return <Input
+          type="text"
+          value={st.user.facultyId}
+          placeholder="ID"
+          onChange={this.facultyIdChange.bind(this)}
+        />;
+    }
   }
 
   render() {
@@ -67,46 +102,26 @@ export default class Profile extends React.Component {
     var pr = this.props;
     return (
       <div className="profileContainer">
-        <div id="profile" className="p20 quizzlyContent">
-          <input
+        <div className="p20 quizzlyContent">
+          <Input
             type="text"
             value={st.user.firstName}
             placeholder="First name"
-            onChange={this.handleChange.bind(this, 'firstName')}
+            onChange={this.firstNameChange.bind(this)}
           />
-          <input
+          <Input
             type="text"
             value={st.user.lastName}
             placeholder="Last name"
-            onChange={this.handleChange.bind(this, 'lastName')}
+            onChange={this.lastNameChange.bind(this)}
           />
-          <input
+          <Input
             type="text"
             value={st.user.email}
             placeholder="Email"
-            onChange={this.handleChange.bind(this, 'email')}
+            onChange={this.emailChange.bind(this)}
           />
-          {(() => {
-            switch (st.user.type) {
-              case 'STUDENT':
-                return
-                  (<input
-                    type="text"
-                    value={st.user.studentId}
-                    placeholder="ID"
-                    onChange={this.handleChange.bind(this, 'studentId')}
-                  />);
-                break;
-              case 'PROFESSOR':
-                (<input
-                  type="text"
-                  value={st.user.facultyId}
-                  placeholder="ID"
-                  onChange={this.handleChange.bind(this, 'facultyId')}
-                />);
-                break;
-            }
-          })()}
+          {this.renderDynamicInputs()}
         </div>
       </div>
     )

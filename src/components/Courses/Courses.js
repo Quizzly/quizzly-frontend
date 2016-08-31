@@ -116,28 +116,30 @@ export default class Courses extends React.Component {
 
   addQuizToCourse(quiz, quizIndex) {
     console.log("Adding quiz '" +  quiz.title + "' in course " + this.props.course.title);
-    var me = this;
-    if(quizIndex > -1) {
+    if(quiz.title.length == 0) {
+      return;
+    }
+    if(quizIndex > -1 && quiz.title.length) {
       Api.db.update('quiz', quiz.id, { title: quiz.title })
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes[quizIndex] = quiz;
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     } else {
       Api.db.create('quiz', {
           title: quiz.title,
-          course: me.props.course.id
+          course: this.props.course.id
         }
       )
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes.push(quiz);
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     }
   }
