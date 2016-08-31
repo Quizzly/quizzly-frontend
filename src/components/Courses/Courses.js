@@ -222,22 +222,24 @@ export default class Courses extends React.Component {
 
   renderCourse() {
     var st = this.state;
-    if(st.course.id > -1) {
-      return (
-        <Course
-          course={st.course}
-          isCourse={true}
-          ref={'course'}
-          showQuizModal={this.showQuizModal.bind(this)}
-          showQuizInModal={this.showQuizInModal.bind(this)}
-          showMetricModal={this.showMetricModal.bind(this)}
-          deleteQuizFromCourse={this.deleteQuizFromCourse.bind(this)}
-          sectionIndex={-1}
-          deleteCourseFromProfessor={this.deleteCourseFromProfessor.bind(this)}
-          deleteSectionFromCourse={this.deleteSectionFromCourse.bind(this)}
-        />
-      );
+    if(st.course.id == -1) {
+      return null;
     }
+
+    return (
+      <Course
+        course={st.course}
+        isCourse={true}
+        ref={'course'}
+        showQuizModal={this.showQuizModal.bind(this)}
+        showQuizInModal={this.showQuizInModal.bind(this)}
+        showMetricModal={this.showMetricModal.bind(this)}
+        deleteQuizFromCourse={this.deleteQuizFromCourse.bind(this)}
+        sectionIndex={-1}
+        deleteCourseFromProfessor={this.deleteCourseFromProfessor.bind(this)}
+        deleteSectionFromCourse={this.deleteSectionFromCourse.bind(this)}
+      />
+    );
   }
 
   renderCourses() {

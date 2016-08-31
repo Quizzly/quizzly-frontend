@@ -172,7 +172,16 @@ export default class AddQuestionBody extends React.Component {
   }
 
   renderFooter() {
-    this.state.isFreeResponse ? null : <div className="footerButton" onClick={this.addQuestion.bind(this)} >+</div>;
+    if(this.state.isFreeResponse) {
+      return null;
+    }
+
+    return <div
+      className="footerButton"
+      onClick={this.addQuestion.bind(this)}
+    >
+      +
+    </div>;
   }
 
   render() {

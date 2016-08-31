@@ -219,7 +219,7 @@ export default class Layout extends React.Component {
     .then(function(answers) {
       answerIds = [];
       answers.map(function(answer){answerIds.push(answer.id);});
-      return Api.db.post('/course/destroy', {id: course.id});
+      return Api.db.post('course/destroy', {id: course.id});
       // return $.when(
       //   ,
         // $.post('/section/multidestroy', {ids: sectionIds}),
