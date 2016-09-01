@@ -263,10 +263,14 @@ export default class Quizzes extends React.Component {
   renderModalHeader() {
     return (
       <div className="flex">
-        {this.state.modalInfo.title}&nbsp;&nbsp;
-        <span className="lastAsked">
-          {this.getLastAskedDate()}
-        </span>
+        {this.state.modalInfo.title}&nbsp;
+        {this.state.modalInfo.title == 'Add Quiz' ?
+          null
+          :
+          <span className="lastAsked">
+            – asked {this.getLastAskedDate()}
+          </span>
+        }
       </div>
     );
   }
