@@ -1,5 +1,9 @@
 @import "~assets/scss/vars.scss";
 
 .quizzesContainer {
-
+  .lastAsked {
+    font-weight: 100;
+    white-space: nowrap;
+    opacity: .50;
+  }
 }

@@ -7,6 +7,10 @@ import AddStudentsBody from 'AddStudentsBody/AddStudentsBody.js'
 import Modal from 'elements/Modal/Modal.js'
 import Api from 'modules/Api.js'
 import Promise from 'bluebird'
+import dateformat from 'dateformat'
+import timeago from 'time-ago'
+var ta = timeago();
+console.log("ta", ta);
 
 export default class Quizzes extends React.Component {
   static propTypes = {
@@ -236,7 +240,35 @@ export default class Quizzes extends React.Component {
     return Api.db.post('question/askWithSection/', {question: question.id, section: sectionId})
     .then(() => {
       console.log("asked question success!");
+      question.lastAsked = new Date();
+      return Api.db.update('question', question.id, {lastAsked: new Date()});
     });
+  }
+
+  getCurrentQuestion() {
+    var st = this.state;
+    return st.quizzes[st.modalInfo.quizIndex].questions[st.modalInfo.questionIndex];
+  }
+
+  getLastAskedDate() {
+    var question = this.getCurrentQuestion();
+    if(question.lastAsked) {
+      // return dateformat(question.lastAsked, "dddd, mmmm d, yyyy @ h:MM tt");
+      console.log(">>>>>>>>question.lastAsked", question.lastAsked);
+      return ta.ago(question.lastAsked);
+    }
+    return 'never';
+  }
+
+  renderModalHeader() {
+    return (
+      <div className="flex">
+        {this.state.modalInfo.title}&nbsp;&nbsp;
+        <span className="lastAsked">
+          {this.getLastAskedDate()}
+        </span>
+      </div>
+    );
   }
 
   renderModalBody() {
@@ -259,9 +291,10 @@ export default class Quizzes extends React.Component {
   }
 
   renderModal() {
+    var st = this.state;
     return (
       <Modal
-        title={this.state.modalInfo.title}
+        title={this.renderModalHeader()}
         body={this.renderModalBody()}
         closeModal={this.closeModal.bind(this)}
       />

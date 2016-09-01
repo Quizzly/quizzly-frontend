@@ -27,6 +27,11 @@
     @include h6;
     padding: 10px;
     @include borderBottom;
+    @include flexVertical;
+  }
+
+  .closeButton {
+    margin-left: auto;
   }
 
   .modalBody {
