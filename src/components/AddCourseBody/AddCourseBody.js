@@ -44,7 +44,7 @@ export default class AddCourseBody extends React.Component {
 
   handleCourseChange(value) {
     var course = this.state.course;
-    course.title = event.target.value;
+    course.title = value;
     this.setState({course: course});
   }
 
@@ -133,10 +133,10 @@ export default class AddCourseBody extends React.Component {
       <div className="addCourseBodyContainer">
         <div className="row">
           <div className="six columns p20 pr10">
-            <div className={"modalButton " + (st.isAddCourse ? "opacity40" : "")} onClick={this.showAddSection.bind(this)}>ADD SECTION</div>
+            <div className={"modalButton " + (st.isAddCourse ? "opacity40" : "")} onClick={this.showAddSection.bind(this)}>NEW SECTION</div>
           </div>
           <div className="six columns p20 pl10">
-            <div className={"modalButton " + (st.isAddCourse ? "" : "opacity40")} onClick={this.showAddCourse.bind(this)}>ADD COURSE</div>
+            <div className={"modalButton " + (st.isAddCourse ? "" : "opacity40")} onClick={this.showAddCourse.bind(this)}>NEW COURSE</div>
           </div>
         </div>
         <div className="pl20 pr20">

@@ -10,7 +10,6 @@ import Promise from 'bluebird'
 import dateformat from 'dateformat'
 import timeago from 'time-ago'
 var ta = timeago();
-console.log("ta", ta);
 
 export default class Quizzes extends React.Component {
   static propTypes = {
@@ -66,7 +65,7 @@ export default class Quizzes extends React.Component {
   showQuestionModal(quizIndex, questionIndex) {
     var quiz = this.state.quizzes[quizIndex];
     var modalInfo = this.state.modalInfo;
-    modalInfo.title = "Editing question in " + quiz.title;
+    modalInfo.title = `Question in ${quiz.title}`;
     modalInfo.modalType = "ADD_QUESTION";
     modalInfo.quizIndex = quizIndex;
     modalInfo.questionIndex = questionIndex;
@@ -252,12 +251,13 @@ export default class Quizzes extends React.Component {
 
   getLastAskedDate() {
     var question = this.getCurrentQuestion();
-    if(question.lastAsked) {
+
+    if(question && question.lastAsked) {
       // return dateformat(question.lastAsked, "dddd, mmmm d, yyyy @ h:MM tt");
       console.log(">>>>>>>>question.lastAsked", question.lastAsked);
-      return ta.ago(question.lastAsked);
+      return `– asked ${ta.ago(question.lastAsked)}`;
     }
-    return 'never';
+    return '- never asked';
   }
 
   renderModalHeader() {
@@ -268,7 +268,7 @@ export default class Quizzes extends React.Component {
           null
           :
           <span className="lastAsked">
-            – asked {this.getLastAskedDate()}
+            {this.getLastAskedDate()}
           </span>
         }
       </div>

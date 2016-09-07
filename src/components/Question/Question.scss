@@ -34,6 +34,7 @@
     padding: 10px;
     font-weight: 700;
     @include flexCenter;
+    font-style: italic;
   }
 
   .selectSectionRow {
@@ -41,6 +42,9 @@
     padding: 10px;
     &:hover {
       background-color: $lightestGray;
+    }
+    &:not(:last-child) {
+      @include borderBottom;
     }
   }
 
