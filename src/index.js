@@ -5,6 +5,7 @@ import Entrance from 'components/Entrance/Entrance.js'
 import Layout from 'components/Layout/Layout.js'
 import Courses from 'components/Courses/Courses.js'
 import Quizzes from 'components/Quizzes/Quizzes.js'
+import Lectures from 'components/Lectures/Lectures.js'
 import Metrics from 'components/Metrics/Metrics.js'
 import StudentQuizzes from 'components/StudentQuizzes/StudentQuizzes.js'
 import StudentMetrics from 'components/StudentMetrics/StudentMetrics.js'
@@ -58,6 +59,7 @@ render((
     <Route path="/" component={Layout} onEnter={checkSession}>
       <IndexRoute component={Courses} />
       <Route path="p/courses" component={Courses} />
+      <Route path="p/lectures" component={Lectures} />
       <Route path="p/quizzes" component={Quizzes} />
       <Route path="p/metrics" component={Metrics} />
       <Route path="p/download" component={Download} />
