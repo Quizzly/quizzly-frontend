@@ -61,6 +61,9 @@ a {
 .mb20 { margin-bottom: 20px; }
 .mb30 { margin-bottom: 30px; }
 
+.mlauto { margin-left: auto; }
+.mrauto { margin-right: auto; }
+
 .italic { font-style: italic; }
 
 .outerShadow {
@@ -154,6 +157,8 @@ a {
   display: flex;
   justify-content: flex-end;
 }
+
+.nowrap { white-space: nowrap; }
 
 .floatL { float: left; }
 .floatR { float: right; }
