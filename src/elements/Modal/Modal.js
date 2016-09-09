@@ -1,4 +1,4 @@
-import s from 'Modal/Modal.scss'
+import s from 'elements/Modal/Modal.scss'
 import Utility from 'modules/Utility.js'
 
 export default class Modal extends React.Component {
@@ -29,7 +29,7 @@ export default class Modal extends React.Component {
           <div className="modalHeader">
             {pr.title}
             <span
-              className="floatR pointer"
+              className="closeButton"
               onClick={pr.closeModal.bind(this)}
             >
               <img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}} />

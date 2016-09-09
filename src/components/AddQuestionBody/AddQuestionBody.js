@@ -1,4 +1,5 @@
 import s from 'AddQuestionBody/AddQuestionBody.scss'
+import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 
 export default class AddQuestionBody extends React.Component {
@@ -53,16 +54,22 @@ export default class AddQuestionBody extends React.Component {
     });
   }
 
+  handleQuestionTitleChange(value) {
+    var question = this.state.question;
+    question.text = value;
+    this.setState({question: question});
+  }
+
+  handleDurationChange(value) {
+    var question = this.state.question;
+    question.duration = value;
+    this.setState({question: question});
+  }
+
   handleChange(i, event) {
     var value = event.target.value;
     var question = this.state.question;
-    if(i == 'question') {
-      question.text = value;
-    } else if(i == 'duration') {
-      question.duration = value;
-    } else {
-      question.answers[i].text = value;
-    }
+    question.answers[i].text = value;
 
     this.setState({question: question});
   }
@@ -129,20 +136,19 @@ export default class AddQuestionBody extends React.Component {
   renderAnswerToQuestion() {
     return (
       <div className="flex mb20 flexVertical">
-        <input
+        <Input
           type="text"
-          className="addCourseInput"
           placeholder="Question..."
           value={this.state.question.text}
-          onChange={this.handleChange.bind(this, 'question')}
+          onChange={this.handleQuestionTitleChange.bind(this)}
         />
         <div className="nowrap mr10 ml10">Time Limit</div>
         <input
           type="number"
-          className="addCourseInput alignC"
+          className="normalInput alignC"
           value={this.state.question.duration}
           min="1"
-          onChange={this.handleChange.bind(this, 'duration')}
+          onChange={this.handleDurationChange.bind(this)}
           style={{maxWidth: "50px"}}
         />
       </div>
@@ -161,7 +167,7 @@ export default class AddQuestionBody extends React.Component {
           </span>
           <input
             type="text"
-            className={`addCourseInput ${answer.correct ? "lightGreenBackground" : ""}`}
+            className={`normalInput ${answer.correct ? "lightGreenBackground" : ""}`}
             value={answer.text}
             placeholder="Option..."
             onChange={this.handleChange.bind(this, answerIndex)}
@@ -172,7 +178,16 @@ export default class AddQuestionBody extends React.Component {
   }
 
   renderFooter() {
-    this.state.isFreeResponse ? null : <div className="footerButton" onClick={this.addQuestion.bind(this)} >+</div>;
+    if(this.state.isFreeResponse) {
+      return null;
+    }
+
+    return <div
+      className="footerButton"
+      onClick={this.addQuestion.bind(this)}
+    >
+      +
+    </div>;
   }
 
   render() {

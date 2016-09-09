@@ -1,6 +1,6 @@
 import s from 'Courses/Courses.scss'
 import Course from 'Course/Course.js'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
 import AddCourseBody from 'AddCourseBody/AddCourseBody.js'
 import AddQuizBody from 'AddQuizBody/AddQuizBody.js'
 import AddQuestionBody from 'AddQuestionBody/AddQuestionBody.js'
@@ -116,28 +116,30 @@ export default class Courses extends React.Component {
 
   addQuizToCourse(quiz, quizIndex) {
     console.log("Adding quiz '" +  quiz.title + "' in course " + this.props.course.title);
-    var me = this;
-    if(quizIndex > -1) {
+    if(quiz.title.length == 0) {
+      return;
+    }
+    if(quizIndex > -1 && quiz.title.length) {
       Api.db.update('quiz', quiz.id, { title: quiz.title })
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes[quizIndex] = quiz;
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     } else {
       Api.db.create('quiz', {
           title: quiz.title,
-          course: me.props.course.id
+          course: this.props.course.id
         }
       )
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes.push(quiz);
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     }
   }
@@ -222,22 +224,24 @@ export default class Courses extends React.Component {
 
   renderCourse() {
     var st = this.state;
-    if(st.course.id > -1) {
-      return (
-        <Course
-          course={st.course}
-          isCourse={true}
-          ref={'course'}
-          showQuizModal={this.showQuizModal.bind(this)}
-          showQuizInModal={this.showQuizInModal.bind(this)}
-          showMetricModal={this.showMetricModal.bind(this)}
-          deleteQuizFromCourse={this.deleteQuizFromCourse.bind(this)}
-          sectionIndex={-1}
-          deleteCourseFromProfessor={this.deleteCourseFromProfessor.bind(this)}
-          deleteSectionFromCourse={this.deleteSectionFromCourse.bind(this)}
-        />
-      );
+    if(st.course.id == -1) {
+      return null;
     }
+
+    return (
+      <Course
+        course={st.course}
+        isCourse={true}
+        ref={'course'}
+        showQuizModal={this.showQuizModal.bind(this)}
+        showQuizInModal={this.showQuizInModal.bind(this)}
+        showMetricModal={this.showMetricModal.bind(this)}
+        deleteQuizFromCourse={this.deleteQuizFromCourse.bind(this)}
+        sectionIndex={-1}
+        deleteCourseFromProfessor={this.deleteCourseFromProfessor.bind(this)}
+        deleteSectionFromCourse={this.deleteSectionFromCourse.bind(this)}
+      />
+    );
   }
 
   renderCourses() {

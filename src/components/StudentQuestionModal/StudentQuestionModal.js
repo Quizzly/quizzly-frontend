@@ -1,5 +1,6 @@
 import s from 'StudentQuestionModal/StudentQuestionModal.scss'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
+import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
 
@@ -39,7 +40,7 @@ export default class StudentQuestionModal extends React.Component {
       <div id="addQuestionBody">
         <div className="p20">
           <div className="flex mb20 flexVertical">
-            <input
+            <Input
               type="text"
               className="addCourseInput"
               placeholder="Question..."
@@ -51,7 +52,7 @@ export default class StudentQuestionModal extends React.Component {
             return (
               <div className="flex mb20 flexVertical" key={answerIndex}>
                 <span className="mr15">{answer.option}.)</span>
-                <input
+                <Input
                   type="text"
                   className={`addCourseInput ${this.chooseAnswerStatus(answer)}`}
                   value={answer.text}

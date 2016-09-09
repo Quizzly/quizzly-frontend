@@ -1,11 +1,14 @@
 import s from 'ProfileModal/ProfileModal.scss'
-import Modal from 'Modal/Modal.js'
+import Modal from 'elements/Modal/Modal.js'
+import Input from 'elements/Input/Input.js'
 import Utility from 'modules/Utility.js'
 import Api from 'modules/Api.js'
 
 export default class ProfileModal extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    user: React.PropTypes.object.isRequired,
+    closeModal: React.PropTypes.func.isRequired,
+    updateUser: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -19,15 +22,35 @@ export default class ProfileModal extends React.Component {
   componentDidMount() {
   }
 
-  handleChange(i, event) {
+  handleChange(input, value) {
     var user = this.state.user;
-    user[i] = event.target.value;
-
+    user[input] = value;
     this.setState({user: user});
+  }
+
+  emailChange(value) {
+    this.handleChange('email', value);
+  }
+
+  firstNameChange(value) {
+    this.handleChange('firstName', value);
+  }
+
+  lastNameChange(value) {
+    this.handleChange('lastName', value);
+  }
+
+  studentIdChange(value) {
+    this.handleChange('studentId', value);
+  }
+
+  facultyIdChange(value) {
+    this.handleChange('facultyId', value);
   }
 
   updateUser() {
     var user = this.state.user;
+    var pr = this.props;
     var newUser = {email: user.email, firstName: user.firstName, lastName: user.lastName};
     var route = "/update/" + user.id;
     switch (user.type) {
@@ -45,8 +68,8 @@ export default class ProfileModal extends React.Component {
     .then((user) => {
       console.log("updated user: ", user);
       this.setState({user: user});
-      this.props.updateUser(user);
-      this.props.closeModal();
+      pr.updateUser(user);
+      pr.closeModal();
     });
   }
 
@@ -54,20 +77,20 @@ export default class ProfileModal extends React.Component {
     var st = this.state;
     switch (st.user.type) {
       case 'STUDENT':
-        return <input
+        return <Input
           type="text"
+          className="mb20"
           value={st.user.studentId ? st.user.studentId : "No ID"}
           placeholder="ID"
-          onChange={this.handleChange.bind(this, 'studentId')}
-          className="show normalInput mb20"
+          onChange={this.studentIdChange.bind(this)}
         />;
       case 'PROFESSOR':
-      return <input
+      return <Input
         type="text"
+        className="mb20"
         value={st.user.facultyId ? st.user.studentId : "No ID"}
         placeholder="ID"
-        onChange={this.handleChange.bind(this, 'facultyId')}
-        className="show normalInput mb20"
+        onChange={this.facultyIdChange.bind(this)}
       />;
     }
   }
@@ -77,26 +100,26 @@ export default class ProfileModal extends React.Component {
     var pr = this.props;
     return (
       <div className="profileModalBody">
-        <input
+        <Input
           type="text"
+          className="mb20"
           value={st.user.firstName}
           placeholder="First name"
-          onChange={this.handleChange.bind(this, 'firstName')}
-          className="show normalInput mb20"
+          onChange={this.firstNameChange.bind(this)}
         />
-        <input
+        <Input
           type="text"
+          className="mb20"
           value={st.user.lastName}
           placeholder="Last name"
-          onChange={this.handleChange.bind(this, 'lastName')}
-          className="show normalInput mb20"
+          onChange={this.lastNameChange.bind(this)}
         />
-        <input
+        <Input
           type="text"
+          className="mb20"
           value={st.user.email}
           placeholder="Email"
-          onChange={this.handleChange.bind(this, 'email')}
-          className="show normalInput mb20"
+          onChange={this.emailChange.bind(this)}
         />
         {this.renderUserIdInput()}
         <button className="centerBlock round" onClick={this.updateUser.bind(this)}>UPDATE INFO</button>

@@ -29,6 +29,7 @@
     "react-router": "^2.2.4",
     "react-signature-pad": "0.0.5",
     "request": "^2.65.0",
+    "time-ago": "^0.1.0",
     "urban-airship-push": "^0.1.0",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",

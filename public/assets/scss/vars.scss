@@ -1,9 +1,9 @@
 $lightBlue: #E1FBFF;
 $lightRed: #FEEDED;
+$lightGreen: #D9FFF0;
 $red: #F05555;
 $green: #32F1A8;
 $darkGreen: #0ec981;
-$lightGreen: #D9FFF0;
 $lightGray: #E1E1E1;
 $lightestGray: #F8F8F8;
 $gray: #838383;
@@ -109,6 +109,18 @@ $mont: 'Montserrat', sans-serif;
   width: 100vw;
   height: 100vh;
   color: $white;
+}
+
+@mixin normalInput {
+  background-color: $lightestGray;
+  border: none;
+  border-radius: $radius;
+  @include p;
+  padding-left: 15px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  @include innerShadow;
+  width: 100%;
 }
 
 // text styles

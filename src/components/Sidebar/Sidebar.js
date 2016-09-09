@@ -41,8 +41,9 @@ export default class Sidebar extends React.Component {
           <span>
             <div className={this.isActive('/p/courses')} onClick={this.setFilter.bind(this, '/p/courses')}>Courses</div>
             <div className={this.isActive('/p/quizzes')} onClick={this.setFilter.bind(this, '/p/quizzes')}>Quizzes</div>
+            <div className={this.isActive('/p/lectures')} onClick={this.setFilter.bind(this, '/p/lectures')}>Lectures</div>
             <div className={this.isActive('/p/metrics')} onClick={this.setFilter.bind(this, '/p/metrics')}>Metrics</div>
-            <div className={this.isActive('/p/download')} onClick={this.setFilter.bind(this, '/p/download')}>Download Grades</div>
+            {/*<div className={this.isActive('/p/download')} onClick={this.setFilter.bind(this, '/p/download')}>Download Grades</div>*/}
           </span>
         );
         break;

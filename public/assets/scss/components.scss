@@ -60,13 +60,7 @@ button, .button {
 }
 
 .normalInput {
-  background-color: $lightestGray;
-  border: none;
-  border-radius: $radius;
-  @include p;
-  padding-left: 15px; padding-top: 13px; padding-bottom: 13px;
-  @include innerShadow;
-  box-sizing: border-box;
+  @include normalInput;
 }
 
 .modalButton {
@@ -115,20 +109,4 @@ button, .button {
   &:hover {
     background-color: darken($lightGreen, 5%) !important;
   }
-}
-
-.addCourseInput {
-  background-color: $lightestGray;
-  border: none;
-  border-radius: $radius;
-  @include p;
-  padding-left: 15px;
-  padding-top: 13px;
-  padding-bottom: 13px;
-  @include innerShadow;
-  width: 100%;
-}
-
-.entranceInput {
-
 }

@@ -1,5 +1,6 @@
 import s from 'Entrance/Entrance.scss'
 import {browserHistory} from 'react-router'
+import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
 
@@ -24,10 +25,26 @@ export default class Entrance extends React.Component {
   componentDidMount() {
   }
 
-  handleInputChange(input, e) {
+  handleInputChange(input, value) {
     var state = this.state;
-    state[input] = e.target.value;
+    state[input] = value;
     this.setState(state);
+  }
+
+  handleEmailChange(value) {
+    this.handleInputChange('email', value);
+  }
+
+  handlePasswordChange(value) {
+    this.handleInputChange('password', value);
+  }
+
+  handleFirstNameChange(value) {
+    this.handleInputChange('firstName', value);
+  }
+
+  handleLastNameChange(value) {
+    this.handleInputChange('lastName', value);
   }
 
   handleEntranceSubmit(e) {
@@ -117,19 +134,21 @@ export default class Entrance extends React.Component {
     var st = this.state;
     return (
       <div>
-        <input
-          className="entranceInput mb30"
+        <Input
+          inputClass="entranceInput"
+          className="mb30"
           type="text"
           placeholder="First name"
           value={st.firstName}
-          onChange={this.handleInputChange.bind(this, 'firstName')}
+          onChange={this.handleFirstNameChange.bind(this)}
         />
-        <input
-          className="entranceInput mb30"
+        <Input
+          inputClass="entranceInput"
+          className="mb30"
           type="text"
           placeholder="Last name"
           value={st.lastName}
-          onChange={this.handleInputChange.bind(this, 'lastName')}
+          onChange={this.handleLastNameChange.bind(this)}
         />
       </div>
     );
@@ -138,24 +157,26 @@ export default class Entrance extends React.Component {
   renderSignInInputs() {
     var inputArray = [];
     inputArray.push(
-      <input
+      <Input
         key={0}
-        className="entranceInput mb30"
+        inputClass="entranceInput"
+        className="mb30"
         type="text"
         placeholder="School email"
         value={this.state.email}
-        onChange={this.handleInputChange.bind(this, 'email')}
+        onChange={this.handleEmailChange.bind(this)}
       />
     );
 
     inputArray.push(
-      <input
+      <Input
         key={1}
+        inputClass="entranceInput"
         className="entranceInput mb30"
         type="password"
         placeholder="Password"
         value={this.state.password}
-        onChange={this.handleInputChange.bind(this, 'password')}
+        onChange={this.handlePasswordChange.bind(this)}
       />
     );
 
