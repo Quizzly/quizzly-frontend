@@ -1,4 +1,5 @@
 import s from 'AddQuizBody/AddQuizBody.scss'
+import Input from 'elements/Input/Input.js'
 
 export default class AddQuizBody extends React.Component {
   static propTypes = {
@@ -26,10 +27,10 @@ export default class AddQuizBody extends React.Component {
   componentDidMount() {
   }
 
-  handleChange(key, event) {
-    var state = this.state;
-    state[key].title = event.target.value;
-    this.setState({quiz: state.quiz});
+  handleChange(value) {
+    var quiz = this.state.quiz;
+    quiz.title = value;
+    this.setState({quiz: quiz});
   }
 
   render() {
@@ -40,12 +41,13 @@ export default class AddQuizBody extends React.Component {
         <div className="p20">
           <div className="flexVertical">
             <span className="mr15" style={{"width":"94px"}}>Quiz title</span>
-            <input
+            <Input
               type="text"
               className="addCourseInput"
               placeholder="Quiz title..."
               value={st.quiz.title}
-              onChange={this.handleChange.bind(this, 'quiz')}
+              onChange={this.handleChange.bind(this)}
+              onEnter={pr.addQuizToCourse.bind(this, st.quiz, pr.quizIndex)}
             />
             <div className="plusButton ml15" onClick={pr.addQuizToCourse.bind(this, st.quiz, pr.quizIndex)}>+</div>
           </div>

@@ -1,4 +1,5 @@
 import s from 'AddCourseBody/AddCourseBody.scss'
+import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 
 export default class AddCourseBody extends React.Component {
@@ -41,13 +42,15 @@ export default class AddCourseBody extends React.Component {
     });
   }
 
-  handleChange(i, event) {
+  handleCourseChange(value) {
     var course = this.state.course;
-    if(i == 'course') {
-      course.title = event.target.value;
-    } else {
-      course.sections[i].title = event.target.value;
-    }
+    course.title = value;
+    this.setState({course: course});
+  }
+
+  handleSectionChange(i, event) {
+    var course = this.state.course;
+    course.sections[i].title = event.target.value;
 
     this.setState({course: course});
   }
@@ -99,12 +102,12 @@ export default class AddCourseBody extends React.Component {
     if(st.isAddCourse) {
       courseInput = (
         <div className="flex mb20 flexVertical">
-          <input
+          <Input
             type="text"
-            className="addCourseInput"
             placeholder={st.course.placeholder}
             value={st.course.title}
-            onChange={this.handleChange.bind(this, 'course')}
+            onChange={this.handleCourseChange.bind(this)}
+            onEnter={pr.addCourseToProfessor.bind(this, st.course, st.term)}
           />
           <select value={st.term.id} className="dropdown ml10" onChange={this.changeTerm.bind(this)}>
             {st.terms.map(function(term, termIndex) {
@@ -113,11 +116,16 @@ export default class AddCourseBody extends React.Component {
           </select>
         </div>
       );
-      addButton = <div className="modalButton" onClick={this.props.addCourseToProfessor.bind(this, st.course, st.term)}>ADD COURSE</div>
+      addButton = <div className="modalButton" onClick={pr.addCourseToProfessor.bind(this, st.course, st.term)}>ADD COURSE</div>
       footerButton = <div className="footerButton" onClick={this.addSection.bind(this)} >+</div>
     } else {
       courseInput = null;
-      addButton = <div className="modalButton" onClick={this.props.addSectionToCourse.bind(this, st.course.sections[0])}>ADD SECTION</div>
+      addButton = <div
+        className="modalButton"
+        onClick={pr.addSectionToCourse.bind(this, st.course.sections[0])}
+      >
+        ADD SECTION
+      </div>
       footerButton = null;
     }
 
@@ -125,10 +133,10 @@ export default class AddCourseBody extends React.Component {
       <div className="addCourseBodyContainer">
         <div className="row">
           <div className="six columns p20 pr10">
-            <div className={"modalButton " + (st.isAddCourse ? "opacity40" : "")} onClick={this.showAddSection.bind(this)}>ADD SECTION</div>
+            <div className={"modalButton " + (st.isAddCourse ? "opacity40" : "")} onClick={this.showAddSection.bind(this)}>NEW SECTION</div>
           </div>
           <div className="six columns p20 pl10">
-            <div className={"modalButton " + (st.isAddCourse ? "" : "opacity40")} onClick={this.showAddCourse.bind(this)}>ADD COURSE</div>
+            <div className={"modalButton " + (st.isAddCourse ? "" : "opacity40")} onClick={this.showAddCourse.bind(this)}>NEW COURSE</div>
           </div>
         </div>
         <div className="pl20 pr20">
@@ -138,10 +146,10 @@ export default class AddCourseBody extends React.Component {
               <div key={i} className="flex mb20 flexVertical">
                 <input
                   type="text"
-                  className="addCourseInput"
+                  className='normalInput'
                   placeholder={section.placeholder}
                   value={section.title}
-                  onChange={this.handleChange.bind(this, i)}
+                  onChange={this.handleSectionChange.bind(this, i)}
                   key={i}
                 />
               </div>

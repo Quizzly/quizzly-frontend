@@ -82,6 +82,22 @@ export default class Question extends React.Component {
     );
   }
 
+  renderSectionsInModal() {
+    var st = this.state;
+    var pr = this.props;
+    return st.sections.map((section, sectionIndex) => {
+      return (
+        <div
+          key={sectionIndex}
+          className="selectSectionRow"
+          onClick={this.askQuestion.bind(this, pr.quizIndex, pr.questionIndex, section.id)}
+        >
+          {section.alias && section.alias.length ? section.alias : section.title}
+        </div>
+      );
+    })
+  }
+
   renderSelectionSection() {
     var st = this.state;
     var pr = this.props;
@@ -96,17 +112,7 @@ export default class Question extends React.Component {
             <img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}}/>
           </span>
         </div>
-        {st.sections.map((section, sectionIndex) => {
-          return (
-            <div
-              key={sectionIndex}
-              className="selectSectionRow"
-              onClick={this.askQuestion.bind(this, pr.quizIndex, pr.questionIndex, section.id)}
-            >
-              {section.title}
-            </div>
-          );
-        })}
+        {this.renderSectionsInModal()}
       </div>
     );
   }

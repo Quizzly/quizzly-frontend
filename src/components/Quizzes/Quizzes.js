@@ -7,6 +7,9 @@ import AddStudentsBody from 'AddStudentsBody/AddStudentsBody.js'
 import Modal from 'elements/Modal/Modal.js'
 import Api from 'modules/Api.js'
 import Promise from 'bluebird'
+import dateformat from 'dateformat'
+import timeago from 'time-ago'
+var ta = timeago();
 
 export default class Quizzes extends React.Component {
   static propTypes = {
@@ -48,9 +51,9 @@ export default class Quizzes extends React.Component {
       });
   }
 
-  showQuizModal(quizIndex) {
+  showQuizModal(quizIndex, quizTitle) {
     var modalInfo = this.state.modalInfo;
-    modalInfo.title = "Add Quiz";
+    modalInfo.title = quizTitle; // either "Add Quiz" or "Edit Quiz"
     modalInfo.modalType = "ADD_QUIZ";
     modalInfo.quizIndex = quizIndex;
     this.setState({
@@ -62,7 +65,7 @@ export default class Quizzes extends React.Component {
   showQuestionModal(quizIndex, questionIndex) {
     var quiz = this.state.quizzes[quizIndex];
     var modalInfo = this.state.modalInfo;
-    modalInfo.title = "Editing question in " + quiz.title;
+    modalInfo.title = `Question in ${quiz.title}`;
     modalInfo.modalType = "ADD_QUESTION";
     modalInfo.quizIndex = quizIndex;
     modalInfo.questionIndex = questionIndex;
@@ -82,6 +85,9 @@ export default class Quizzes extends React.Component {
 
   addQuizToCourse(quiz, quizIndex) {
     console.log("Adding quiz '" +  quiz.title + "' in course " + this.props.course.title);
+    if(quiz.title.length == 0) {
+      return;
+    }
     if(quizIndex > -1) {
       Api.db.update('quiz', quiz.id, { title: quiz.title })
       .then((quiz) => {
@@ -233,7 +239,40 @@ export default class Quizzes extends React.Component {
     return Api.db.post('question/askWithSection/', {question: question.id, section: sectionId})
     .then(() => {
       console.log("asked question success!");
+      question.lastAsked = new Date();
+      return Api.db.update('question', question.id, {lastAsked: new Date()});
     });
+  }
+
+  getCurrentQuestion() {
+    var st = this.state;
+    return st.quizzes[st.modalInfo.quizIndex].questions[st.modalInfo.questionIndex];
+  }
+
+  getLastAskedDate() {
+    var question = this.getCurrentQuestion();
+
+    if(question && question.lastAsked) {
+      // return dateformat(question.lastAsked, "dddd, mmmm d, yyyy @ h:MM tt");
+      console.log(">>>>>>>>question.lastAsked", question.lastAsked);
+      return `– asked ${ta.ago(question.lastAsked)}`;
+    }
+    return '- never asked';
+  }
+
+  renderModalHeader() {
+    return (
+      <div className="flex">
+        {this.state.modalInfo.title}&nbsp;
+        {this.state.modalInfo.title == 'Add Quiz' ?
+          null
+          :
+          <span className="lastAsked">
+            {this.getLastAskedDate()}
+          </span>
+        }
+      </div>
+    );
   }
 
   renderModalBody() {
@@ -256,9 +295,10 @@ export default class Quizzes extends React.Component {
   }
 
   renderModal() {
+    var st = this.state;
     return (
       <Modal
-        title={this.state.modalInfo.title}
+        title={this.renderModalHeader()}
         body={this.renderModalBody()}
         closeModal={this.closeModal.bind(this)}
       />
@@ -286,7 +326,12 @@ export default class Quizzes extends React.Component {
               />
             );
           }, this)}
-          <div className="addEntityButton" onClick={this.showQuizModal.bind(this, -1)}>+</div>
+          <div
+            className="addEntityButton"
+            onClick={this.showQuizModal.bind(this, -1, "Add Quiz")}
+          >
+            +
+          </div>
         </div>
         {st.showModal ? this.renderModal() : null}
       </div>

@@ -29,7 +29,7 @@ export default class Modal extends React.Component {
           <div className="modalHeader">
             {pr.title}
             <span
-              className="floatR pointer"
+              className="closeButton"
               onClick={pr.closeModal.bind(this)}
             >
               <img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}} />

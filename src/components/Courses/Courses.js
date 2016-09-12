@@ -5,6 +5,8 @@ import AddCourseBody from 'AddCourseBody/AddCourseBody.js'
 import AddQuizBody from 'AddQuizBody/AddQuizBody.js'
 import AddQuestionBody from 'AddQuestionBody/AddQuestionBody.js'
 import AddStudentsBody from 'AddStudentsBody/AddStudentsBody.js'
+import EditCourseModal from 'EditCourseModal/EditCourseModal.js'
+import EditSectionModal from 'EditSectionModal/EditSectionModal.js'
 
 import Api from 'modules/Api.js'
 
@@ -114,30 +116,55 @@ export default class Courses extends React.Component {
     });
   }
 
+  showEditCourseModal(course) {
+    var modalInfo = this.state.modalInfo;
+    modalInfo.modalType = "EDIT_COURSE";
+    modalInfo.course = course;
+    this.setState({
+      showModal: true,
+      showMetricModal: false,
+      modalInfo: modalInfo
+    });
+  }
+
+  showEditSectionModal(section, sectionIndex) {
+    var modalInfo = this.state.modalInfo;
+    modalInfo.modalType = "EDIT_SECTION";
+    modalInfo.section = section;
+    modalInfo.sectionIndex = sectionIndex;
+    this.setState({
+      showModal: true,
+      showMetricModal: false,
+      modalInfo: modalInfo
+    });
+  }
+
   addQuizToCourse(quiz, quizIndex) {
     console.log("Adding quiz '" +  quiz.title + "' in course " + this.props.course.title);
-    var me = this;
-    if(quizIndex > -1) {
+    if(quiz.title.length == 0) {
+      return;
+    }
+    if(quizIndex > -1 && quiz.title.length) {
       Api.db.update('quiz', quiz.id, { title: quiz.title })
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes[quizIndex] = quiz;
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     } else {
       Api.db.create('quiz', {
           title: quiz.title,
-          course: me.props.course.id
+          course: this.props.course.id
         }
       )
-      .then(function(quiz) {
+      .then((quiz) => {
         console.log(quiz);
-        var course = me.state.course;
+        var course = this.state.course;
         course.quizzes.push(quiz);
-        me.setState({course: course});
-        me.closeModal();
+        this.setState({course: course});
+        this.closeModal();
       });
     }
   }
@@ -220,6 +247,32 @@ export default class Courses extends React.Component {
     });
   }
 
+  updateSectionInfo(section, sectionIndex) {
+    var course = this.state.course;
+    course.sections[sectionIndex] = section;
+
+    Api.db.update('course', course.id, course)
+    .then((newCourse) => {
+      // NOTE: do not use newCourse.  It should just be course
+      this.setState({
+        course: course,
+        showModal: false
+      });
+    });
+  }
+
+  updateCourseInfo(course) {
+    console.log("course", course);
+    Api.db.update('course', course.id, course)
+    .then((newCourse) => {
+      // NOTE: do not use newCourse.  It should just be course
+      this.setState({
+        course: course,
+        showModal: false
+      });
+    });
+  }
+
   renderCourse() {
     var st = this.state;
     if(st.course.id == -1) {
@@ -229,10 +282,11 @@ export default class Courses extends React.Component {
     return (
       <Course
         course={st.course}
-        isCourse={true}
-        ref={'course'}
+        isCourse
+        ref="course"
         showQuizModal={this.showQuizModal.bind(this)}
         showQuizInModal={this.showQuizInModal.bind(this)}
+        showEditCourseModal={this.showEditCourseModal.bind(this)}
         showMetricModal={this.showMetricModal.bind(this)}
         deleteQuizFromCourse={this.deleteQuizFromCourse.bind(this)}
         sectionIndex={-1}
@@ -242,20 +296,21 @@ export default class Courses extends React.Component {
     );
   }
 
-  renderCourses() {
+  renderSections() {
     var st = this.state;
     return st.sections.map((section, sectionIndex) => {
       // this is section, not course!
       return (
         <Course
           section={section}
+          isCourse={false}
           sectionIndex={sectionIndex}
           course={st.course}
-          isCourse={false}
           key={sectionIndex}
           showQuizInModal={this.showQuizInModal.bind(this)}
           showMetricModal={this.showMetricModal.bind(this)}
           showStudentsModal={this.showStudentsModal.bind(this)}
+          showEditSectionModal={this.showEditSectionModal.bind(this)}
           deleteSectionFromCourse={this.deleteSectionFromCourse.bind(this)}
         />
       );
@@ -286,6 +341,23 @@ export default class Courses extends React.Component {
 
   renderModal() {
     var st = this.state;
+    switch (st.modalInfo.modalType) {
+      case 'EDIT_COURSE':
+        return <EditCourseModal
+          course={st.course}
+          updateCourseInfo={this.updateCourseInfo.bind(this)}
+          closeModal={this.closeModal.bind(this)}
+        />
+      break;
+      case 'EDIT_SECTION':
+        return <EditSectionModal
+          section={st.modalInfo.section}
+          sectionIndex={st.modalInfo.sectionIndex}
+          updateSectionInfo={this.updateSectionInfo.bind(this)}
+          closeModal={this.closeModal.bind(this)}
+        />
+      break;
+    }
     return (
       <Modal
         title={st.modalInfo.title}
@@ -314,7 +386,7 @@ export default class Courses extends React.Component {
       <div className="coursesContainer">
         <div className="quizzlyContent">
           {this.renderCourse()}
-          {this.renderCourses()}
+          {this.renderSections()}
           <div
             className="addEntityButton"
             onClick={this.showCourseModal.bind(this)}
