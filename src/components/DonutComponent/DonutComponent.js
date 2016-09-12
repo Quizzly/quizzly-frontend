@@ -19,7 +19,7 @@ var barData = [
 ];
 var data = [
   {
-    "Name": "Kevin",
+    "Name": "Jackson",
     "Questions Correct": 3,
     "Questions Incorrect": 4
   }
@@ -75,16 +75,67 @@ export default class DonutComponent extends React.Component {
     var st = this.state;
     var pr = this.props;
     return (
-      <div className="barContainer">
-      <BarStackChart
-        data= {data}
-        width= {width}
-        height= {height}
-        chartSeries = {chartSeries}
-        x= {x}
-        xScale= {xScale}
-        yTicks= {yTicks}
-      />
+      <div>
+      <div className="chartContainer">
+        <BarStackChart
+          data= {data}
+          width= {width}
+          height= {height}
+          chartSeries = {chartSeries}
+          x= {x}
+          xScale= {xScale}
+          yTicks= {yTicks}/>
+          <div className="testBring"></div>
+      </div>
+      <div className="questionsContainer">
+        <div className="flex mb20 flexVertical">
+          <input
+            type="text"
+            className={`normalInput`}
+            value="Which of the following is a collaboration tool?"
+            placeholder="Option..."
+          />
+        </div>
+        <div className="flex mb20 flexVertical">
+          <span
+            className="mr15 greyButton"
+          >
+            A.)
+          </span>
+          <input
+            type="text"
+            className={`normalInput`}
+            value="Asus"
+            placeholder="Option..."
+          />
+        </div>
+        <div className="flex mb20 flexVertical">
+          <span
+            className="mr15 greenButton"
+          >
+            B.)
+          </span>
+          <input
+            type="text"
+            className={`normalInput lightGreenBackground`}
+            value="Slack"
+            placeholder="Option..."
+          />
+        </div>
+        <div className="flex mb20 flexVertical">
+          <span
+            className="mr15 greyButton"
+          >
+            C.)
+          </span>
+          <input
+            type="text"
+            className={`normalInput`}
+            value="Banana"
+            placeholder="Option..."
+          />
+        </div>
+      </div>
       </div>
     )
   }
