@@ -51,9 +51,9 @@ export default class Quizzes extends React.Component {
       });
   }
 
-  showQuizModal(quizIndex) {
+  showQuizModal(quizIndex, quizTitle) {
     var modalInfo = this.state.modalInfo;
-    modalInfo.title = "Add Quiz";
+    modalInfo.title = quizTitle; // either "Add Quiz" or "Edit Quiz"
     modalInfo.modalType = "ADD_QUIZ";
     modalInfo.quizIndex = quizIndex;
     this.setState({
@@ -326,7 +326,12 @@ export default class Quizzes extends React.Component {
               />
             );
           }, this)}
-          <div className="addEntityButton" onClick={this.showQuizModal.bind(this, -1)}>+</div>
+          <div
+            className="addEntityButton"
+            onClick={this.showQuizModal.bind(this, -1, "Add Quiz")}
+          >
+            +
+          </div>
         </div>
         {st.showModal ? this.renderModal() : null}
       </div>

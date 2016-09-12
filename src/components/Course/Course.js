@@ -1,47 +1,64 @@
 import s from 'Course/Course.scss'
+
 import Panel from 'elements/Panel/Panel.js'
 import Utility from 'modules/Utility.js'
 
 export default class Course extends React.Component {
   static propTypes = {
     course: React.PropTypes.object.isRequired,
+    showEditCourseModal: React.PropTypes.func,
+    showEditSectionModal: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      title: "Course Title",
-    };
+    this.state = {};
   }
 
   componentDidMount() {
     // console.log("Course: componentDidMount", this.props.course);
-    this.setState({course: this.props.course});
+  }
+
+  renderPanelHeaderTitle() {
+    var pr = this.props;
+    if(pr.isCourse) {
+      return pr.course.title;
+    }
+
+    if(pr.section.alias && pr.section.alias.length) {
+      return pr.section.alias;
+    }
+
+    return pr.section.title;
   }
 
   renderPanelHeader() {
     var st = this.state;
     var pr = this.props;
-    var header = [];
-    header.push(
-      pr.isCourse ? pr.course.title : pr.section.title
-    );
-
-    header.push(
-      <span
-        key={0}
-        className="floatR pointer"
-        onClick={pr.isCourse ?
-          pr.deleteCourseFromProfessor.bind(this, pr.course)
-          :
-          pr.deleteSectionFromCourse.bind(this, pr.sectionIndex)}
+    return (
+      <div className="coursePanelHeader">
+        <div
+          className="pointer"
+          onClick={pr.isCourse ?
+            pr.showEditCourseModal.bind(this, pr.course)
+            :
+            pr.showEditSectionModal.bind(this, pr.section, pr.sectionIndex)
+          }
         >
-          <img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}}/>
-        </span>
+          {this.renderPanelHeaderTitle()}
+        </div>
+        <div
+          className="mlauto"
+          onClick={pr.isCourse ?
+            pr.deleteCourseFromProfessor.bind(this, pr.course)
+            :
+            pr.deleteSectionFromCourse.bind(this, pr.sectionIndex)}
+          >
+            <img src={Utility.CLOSE_IMAGE_PATH} style={{"width":"12px"}}/>
+          </div>
+      </div>
     );
-
-    return header;
   }
 
   renderPanelBody() {
@@ -86,11 +103,13 @@ export default class Course extends React.Component {
     var st = this.state;
     var pr = this.props;
     return (
-      <Panel
-        header={this.renderPanelHeader()}
-        body={this.renderPanelBody()}
-        footer={this.renderPanelFooter()}
-      />
+      <span className="courseContainer">
+        <Panel
+          header={this.renderPanelHeader()}
+          body={this.renderPanelBody()}
+          footer={this.renderPanelFooter()}
+        />
+      </span>
     )
   }
 }

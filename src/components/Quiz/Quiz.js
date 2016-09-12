@@ -34,7 +34,7 @@ export default class Quiz extends React.Component {
       <span
         key={0}
         className="pointer"
-        onClick={pr.showQuizModal.bind(this, pr.quizIndex)}
+        onClick={pr.showQuizModal.bind(this, pr.quizIndex, "Edit Quiz")}
       >
         {pr.quiz.title}
       </span>
