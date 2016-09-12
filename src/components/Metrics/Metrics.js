@@ -1,5 +1,6 @@
 import s from 'Metrics/Metrics.scss'
 import Api from 'modules/Api.js'
+import DonutComponent from 'DonutComponent/DonutComponent.js'
 
 var Promise = require('bluebird');
 // Global Variable used to determine whether to use a bar or Line Chart
@@ -2378,6 +2379,7 @@ createSectionMetric(secTitles, quizTitlesArrays, quizPercentsArrays){
           <div id="AnswersContainer" className="metricsText"></div>
           </div>
         }
+        <DonutComponent></DonutComponent>
       </div>
     )
   }

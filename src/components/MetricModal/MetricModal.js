@@ -43,9 +43,7 @@ var donutDummyData = [
 
 
 export default class MetricModal extends React.Component {
-  static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
-  }
+
 
   constructor(props) {
     super(props);
