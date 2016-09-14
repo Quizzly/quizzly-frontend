@@ -92,7 +92,7 @@ export default class Question extends React.Component {
           className="selectSectionRow"
           onClick={this.askQuestion.bind(this, pr.quizIndex, pr.questionIndex, section.id)}
         >
-          {section.title}
+          {section.alias && section.alias.length ? section.alias : section.title}
         </div>
       );
     })
