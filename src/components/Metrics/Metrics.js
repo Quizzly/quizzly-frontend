@@ -175,33 +175,6 @@ export default class Metrics extends React.Component {
       selectedQuestion: index,
     });
   }
-//
-//   changeStudent(event) {
-//     var student = this.state.student;
-//     student.id = event.target.value;
-//     var event_target = event.target;
-//     var me = this;
-//     // $.post('/student/getStudentsByCourseId', {question: question.id})
-//     // .then(function(answers) {
-//       me.setState({
-//         // question: event_target,
-//         // answer: {id: -1},
-//         quiz: {id: -1},
-//         question: {id: -1},
-//         answer: {id: -1},
-//         student: student,
-//
-//         // answers: answers,
-//         // students: [],
-//
-//         isAllQuizzes: false,
-//         isAllQuestions: false,
-//         isAllAnswers: false,
-//         isAllStudents: false
-//       // });
-//     // });
-//   });
-// }
 
   getMetrics() {
     console.log("getting metrics...");
