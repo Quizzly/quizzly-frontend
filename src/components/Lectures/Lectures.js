@@ -32,8 +32,9 @@ export default class Lectures extends React.Component {
   }
 
   getLectures() {
-    return Api.db.find('lecture', {course: this.props.course.id})
+    return Api.db.post('full/lectures', {course: this.props.course.id})
     .then((lectures) => {
+      console.log(">>>>> fullLectures", lectures);
       this.setState({lectures: lectures});
     });
   }
@@ -92,6 +93,17 @@ export default class Lectures extends React.Component {
     })
   }
 
+  selectLecture(lecture) {
+    // Api.db.post('lecture/full', {course: this.props.course.id})
+    // .then((lecture) => {
+    //
+    // });
+    this.setState({
+      lecture: lecture,
+      isLecture: true
+    });
+  }
+
   renderLecture() {
     var st = this.state;
     return (
@@ -115,6 +127,7 @@ export default class Lectures extends React.Component {
         <LecturePanel
           key={i}
           lecture={lecture}
+          selectLecture={this.selectLecture.bind(this)}
         />
       );
     })
