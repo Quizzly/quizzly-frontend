@@ -33,7 +33,9 @@ export default class LecturePanel extends React.Component {
   renderQuizItem(lectureItem) {
     return (
       <div>
-        <div className="lectureQuizItem">{lectureItem.quiz.title}</div>
+        <div className="lectureQuizItem">
+          Quiz: {lectureItem.quiz.title}
+        </div>
         {lectureItem.quiz.questions.map((question, i) => {
           return (
             <div
