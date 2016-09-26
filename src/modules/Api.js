@@ -1,5 +1,13 @@
 var Url = require('./Url.js');
 
+// Let ajax use cookies
+$.ajaxSetup({
+  xhrFields: {
+    withCredentials: true
+  },
+  crossDomain: true
+});
+
 class Route {
   constructor(baseUrl) {
     this.baseUrl = `${baseUrl}/`;
@@ -52,7 +60,7 @@ class Route {
       url: `${this.baseUrl}${model}/${id}/${association}/${fk}`,
       method: 'DELETE',
       dataType: 'json',
-      contentType: 'application/json',
+      crossDomain: true
     });
   }
 }
