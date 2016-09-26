@@ -103,6 +103,19 @@ button, .button {
   }
 }
 
+.redButton{
+  text-align: center;
+  cursor: pointer;
+  border-radius: $radius;
+  border: $solidBorder;
+  background-color: $lightRed;
+  padding: 10px;
+  flex-shrink: 0;
+  &:hover {
+    background-color: darken($lightRed, 5%) !important;
+  }
+}
+
 .plusButton {
   @extend .greenButton;
   font-weight: 500;

@@ -1,9 +1,8 @@
 import s from 'Metrics/Metrics.scss'
 import Api from 'modules/Api.js'
 import DonutComponent from 'DonutComponent/DonutComponent.js'
-
+import MetricData from 'MetricData/MetricData.js'
 var Promise = require('bluebird');
-
 
 export default class Metrics extends React.Component {
   static propTypes = {
@@ -25,6 +24,11 @@ export default class Metrics extends React.Component {
       selectedQuiz: -1,
       selectedQuestion: -1,
 
+      renderedSection: -1,
+      renderedStudent: -1,
+      renderedQuiz: -1,
+      renderedQuestion: -1,
+
       allSections: {id: -1, title: "All"},
       allStudents: {id: -1, title: "All"},
       allQuizzes: {id: -1, title: "All"},
@@ -34,6 +38,8 @@ export default class Metrics extends React.Component {
       isAllStudentsOptionAvailable: true,
       isAllQuizzesOptionAvailable: true,
       isAllQuestionsOptionAvailable: true,
+
+      canRender: false
     }
   }
 
@@ -178,7 +184,31 @@ export default class Metrics extends React.Component {
 
   getMetrics() {
     console.log("getting metrics...");
+    this.setState({
+      canRender: true,
+      renderedSection: this.state.selectedSection == -1 ? -1 : this.state.sections[this.state.selectedSection].id,
+      renderedStudent: this.state.selectedStudent == -1 ? -1 : this.state.students[this.state.selectedStudent].id,
+      renderedQuiz: this.state.selectedQuiz == -1 ? -1 : this.state.quizzes[this.state.selectedQuiz].id,
+      renderedQuestion: this.state.selectedQuestion == -1 ? -1 : this.state.questions[this.state.selectedQuestion].id
+    });
+  }
+  renderMetricsData(){
+    if(this.state.canRender){
+      console.log("can render");
 
+      console.log(this.state.renderedSection);
+      console.log(this.state.renderedStudent);
+      console.log(this.state.renderedQuiz);
+      console.log(this.state.renderedQuestion);
+      return (
+        <MetricData
+          section={this.state.renderedSection}
+          student={this.state.renderedStudent}
+          quiz={this.state.renderedQuiz}
+          question={this.state.renderedQuestion}
+        />
+      )
+    }
   }
 
   render() {
@@ -225,7 +255,7 @@ export default class Metrics extends React.Component {
           </div>
           <button onClick={this.getMetrics.bind(this)}>GET METRICS</button>
         </div>
-        <DonutComponent></DonutComponent>
+        {this.renderMetricsData()}
       </div>
     )
   }
