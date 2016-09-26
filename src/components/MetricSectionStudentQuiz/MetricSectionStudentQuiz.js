@@ -28,50 +28,17 @@ export default class MetricSectionStudentQuiz extends React.Component {
   renderChart(props){
     var me = this;
     var pr = props || this.props;
-
-    console.log(pr.student);
-    Api.db.find('studentanswer', {
+    //
+    Api.db.post('studentanswer/getMetrics', {
       student: pr.student,
       quiz: pr.quiz,
-      section: pr.section
-    })
-    .then(studentanswers => {
-      me.setState({
-        studentanswers: studentanswers,
-        name: studentanswers[0].student.firstName
-      });
-      // me.findQuestionsAndAnswers();
-      me.calculate();
-      console.log(me.state.size);
-      console.log(me.state.correct);
-      console.log(me.state.incorrect);
-    });
-  }
-  // findQuestionsAndAnswers(){
-  //   $.when(
-  //     Api.db.find('quiz', {quiz: this.state.quiz}),
-  //     Api.db.find('answer'), {question: this.state.question})
-  //
-  // }
-  calculate(){
-    var countIncorrect = 0;
-    var size;
-
-    var size = this.state.studentanswers.length;
-    for(var i = 0 ; i < size; i++){
-      if(this.state.studentanswers[i].answer && this.state.studentanswers[i].answer.correct == false){
-        countIncorrect++;
-      }
-    }
-    var countCorrect = size - countIncorrect;
-    console.log(this.state.studentanswers);
-    Api.db.post('studentanswer/getMetrics', { quiz: this.props.quiz, studentanswers: this.state.studentanswers })
-    .then(questions => {
+      section: pr.section })
+    .then(metrics => {
       this.setState({
-        questions: questions,
-        size: size,
-        correct: countCorrect,
-        incorrect: countIncorrect
+        questions: metrics.questions,
+        size: metrics.size,
+        correct: metrics.countCorrect,
+        incorrect: metrics.countIncorrect
       });
     });
   }
