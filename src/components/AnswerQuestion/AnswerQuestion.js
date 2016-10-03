@@ -12,10 +12,15 @@ export default class AnswerQuestion extends React.Component {
     super(props);
 
     this.state = {
-      question: {},
+      question: {
+        quiz: {
+          title: ''
+        }
+      },
       timeRemaining: '',
       freeResponseAnswer: '',
-      selectedAnswer: {}
+      selectedAnswer: {},
+
     };
   }
 
@@ -56,14 +61,11 @@ export default class AnswerQuestion extends React.Component {
 
     function timer() {
       timeRemaining--;
-
-      me.setState({timeRemaining: timeRemaining, counter: counter}, function () {
-        if (timeRemaining <= 0) {
-          clearInterval(counter);
-          browserHistory.push('/s/quizzes');
-          return;
-        }
-      }.bind(this));
+      if(timeRemaining <= 0) {
+        me.clearCounter();
+        browserHistory.push('/s/quizzes');
+      }
+      me.setState({timeRemaining: timeRemaining, counter: counter});
     }
   }
 
@@ -164,6 +166,7 @@ export default class AnswerQuestion extends React.Component {
         </div>
 
         <div id="studentQuestion">
+          <div className="quizTitle">{(st.question.quiz.title + "").toUpperCase()}</div>
           <div className="question">{st.question.text}</div>
           <div className="questionBorder"></div>
           {this.renderAnswerSection()}
