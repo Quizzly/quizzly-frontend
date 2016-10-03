@@ -3,6 +3,7 @@ import {browserHistory} from 'react-router'
 import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
+import Socket from 'modules/Socket.js'
 
 export default class Entrance extends React.Component {
   static propTypes = {
@@ -73,6 +74,7 @@ export default class Entrance extends React.Component {
             route = '/p/courses';
             break;
           case 'STUDENT':
+            Socket.subscribeToSections();
             route = '/s/quizzes';
             break;
         }

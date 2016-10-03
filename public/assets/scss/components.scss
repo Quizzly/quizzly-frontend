@@ -90,6 +90,31 @@ button, .button {
     background-color: darken($lightGreen, 5%) !important;
   }
 }
+.greyButton{
+  text-align: center;
+  cursor: pointer;
+  border-radius: $radius;
+  border: $solidBorder;
+  background-color: #F8F8F8;
+  padding: 10px;
+  flex-shrink: 0;
+  &:hover {
+    background-color: darken(#F8F8F8, 5%) !important;
+  }
+}
+
+.redButton{
+  text-align: center;
+  cursor: pointer;
+  border-radius: $radius;
+  border: $solidBorder;
+  background-color: $lightRed;
+  padding: 10px;
+  flex-shrink: 0;
+  &:hover {
+    background-color: darken($lightRed, 5%) !important;
+  }
+}
 
 .plusButton {
   @extend .greenButton;

@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 component=$1
 componentContainer="${component,}Container"
 folderPath="src/components/$component"
