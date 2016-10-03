@@ -30,6 +30,8 @@
     "react-onclickout": "^2.0.4",
     "react-router": "^2.2.4",
     "request": "^2.65.0",
+    "sails.io.js": "^0.13.8",
+    "socket.io-client": "^1.4.8",
     "time-ago": "^0.1.0",
     "urban-airship-push": "^0.1.0",
     "webpack": "^1.13.0",
