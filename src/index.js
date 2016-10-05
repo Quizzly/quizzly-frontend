@@ -12,6 +12,9 @@ import StudentMetrics from 'components/StudentMetrics/StudentMetrics.js'
 import AskStudentQuestion from 'components/AskStudentQuestion/AskStudentQuestion.js'
 import Download from 'components/Download/Download.js'
 import StudentList from 'components/StudentList/StudentList.js'
+import AnswerQuestion from 'components/AnswerQuestion/AnswerQuestion'
+import Socket from 'modules/Socket'
+
 
 import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
@@ -30,6 +33,7 @@ function checkSession(nextState, replace, callback) {
       var route = 'professor';
       switch(user.type) {
         case "STUDENT":
+          Socket.subscribeToSections();
           route = 'student';
         break;
         case "PROFESSOR":
@@ -66,6 +70,7 @@ render((
       <Route path="s/quizzes" component={StudentQuizzes} />
       <Route path="s/metrics" component={StudentMetrics} />
     </Route>
+    <Route path="s/answer/:questionKey" component={AnswerQuestion}/>
     <Route path="/s/question/:questionId/:sectionId" component={AskStudentQuestion} />
     <Route path="/entrance" component={Entrance} />
     <Route path="/style" component={Style} />
