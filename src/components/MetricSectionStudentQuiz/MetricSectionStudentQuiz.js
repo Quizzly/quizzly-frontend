@@ -38,7 +38,8 @@ export default class MetricSectionStudentQuiz extends React.Component {
         questions: metrics.questions,
         size: metrics.size,
         correct: metrics.countCorrect,
-        incorrect: metrics.countIncorrect
+        incorrect: metrics.countIncorrect,
+        unanswered: metrics.countUnanswered
       });
     });
   }
@@ -52,6 +53,7 @@ export default class MetricSectionStudentQuiz extends React.Component {
           name={this.state.name}
           correct={this.state.correct}
           incorrect={this.state.incorrect}
+          unanswered={this.state.unanswered}
           size={this.state.size}
         />
         <Solution

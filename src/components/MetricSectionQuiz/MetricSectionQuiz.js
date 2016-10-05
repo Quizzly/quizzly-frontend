@@ -36,21 +36,15 @@ export default class MetricSectionQuiz extends React.Component {
     // });
     var data = [
       {
-        "name": "Kevin",
-        "Questions Correct": 3
+        "name": "Business Attire",
+        "Questions Correct": 1,
+        "Questions Incorrect": 2
       },
       {
-        "name": "Danny",
-        "Questions Correct": 2
-      },
-      {
-        "name": "Connor",
-        "Questions Correct": 2
-      },
-      {
-        "name": "Benny",
-        "Questions Correct": 1
-      },
+        "name": "Group Work",
+        "Questions Correct": 2,
+        "Questions Incorrect": 1
+      }
     ];
     this.setState({
       data: data,

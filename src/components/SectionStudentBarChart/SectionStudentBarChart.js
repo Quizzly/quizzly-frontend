@@ -1,5 +1,4 @@
-import s from 'SectionStudentQuizBarChart/SectionStudentQuizBarChart.scss'
-
+import s from 'SectionStudentBarChart/SectionStudentBarChart.scss'
 var rd3b = require('react-d3-basic');
 
 var BarStackChart = rd3b.BarStackChart;
@@ -13,10 +12,6 @@ var width = 700,
      {
        field: 'Questions Incorrect',
        name: 'Questions Incorrect'
-     },
-     {
-       field: 'Questions Unanswered',
-       name: 'Questions Unanswered'
      }
    ],
    x = function(d) {
@@ -25,26 +20,15 @@ var width = 700,
    xScale = 'ordinal',
    yTickFormat = d3.format(".2s");
 
-
-export default class SectionStudentQuizBarChart extends React.Component {
+export default class SectionStudentBarChart extends React.Component {
   static propTypes = {
+    dummy: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      // correct : props.correct,
-      // student : props.name,
-      // incorrect : props.incorrect,
-      data : [
-        {
-          "Name": props.name,
-          "Questions Correct": props.correct,
-          "Questions Incorrect": props.incorrect,
-          "Questions Unanswered": props.uncorrect
-        }
-      ],
       yTicks : [props.size]
     }
   }
@@ -52,15 +36,8 @@ export default class SectionStudentQuizBarChart extends React.Component {
   componentWillReceiveProps(nextProps){
     // console.log("props changed");
     // console.log(nextProps.student);
+    console.log(nextProps.size);
     this.setState({
-      data : [
-        {
-          "Name": nextProps.name,
-          "Questions Correct": nextProps.correct,
-          "Questions Incorrect": nextProps.incorrect,
-          "Questions Unanswered": nextProps.unanswered
-        }
-      ],
       yTicks : [nextProps.size]
     });
     // console.log(this.state.student);
@@ -74,7 +51,7 @@ export default class SectionStudentQuizBarChart extends React.Component {
   renderChart(){
     return (
       <BarStackChart
-        data= {this.state.data}
+        data= {this.props.data}
         width= {width}
         height= {height}
         chartSeries = {chartSeries}
