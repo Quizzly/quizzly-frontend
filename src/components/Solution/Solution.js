@@ -19,7 +19,7 @@ export default class Solution extends React.Component {
           type="text"
           className={`normalInput lightGreenBackground`}
           value={question.answerText}
-          placeholder="Option..."
+          placeholder=""
         />
       </div>
     )
@@ -58,6 +58,7 @@ export default class Solution extends React.Component {
                 value={question.text}
                 placeholder="Option..."
               />
+              <span> {question.studentUnanswered ? "unanswered" : ""} </span>
             </div>
             <div>
               { question.answers.length > 0 ? this.renderAnswers(question) : this.renderFreeResponse(question) }
