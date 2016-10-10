@@ -12,7 +12,7 @@ var width = 700,
       }
     ],
     x = function(d) {
-      return d.name;
+      return d.Name;
     },
     xScale = 'ordinal',
     xLabel = "Student",

@@ -1,6 +1,6 @@
 import s from 'MetricSectionQuiz/MetricSectionQuiz.scss'
 import SectionQuizBarChart from 'SectionQuizBarChart/SectionQuizBarChart.js'
-
+import Api from 'modules/Api.js'
 export default class MetricSectionQuiz extends React.Component {
   static propTypes = {
     dummy: React.PropTypes.object.isRequired,
@@ -25,31 +25,29 @@ export default class MetricSectionQuiz extends React.Component {
     var me = this;
     var pr = props || this.props;
 
-    // Api.db.find('studentanswer', {
-    //   quiz: pr.quiz,
-    //   section: pr.section
-    // })
-    // .then(data => {
-    //   me.setState({
-    //     data: data
-    //   });
-    // });
-    var data = [
-      {
-        "name": "Kevin",
-        "Questions Correct": 1,
-        "Questions Incorrect": 2
-      },
-      {
-        "name": "Benny",
-        "Questions Correct": 2,
-        "Questions Incorrect": 1
-      }
-    ];
-    this.setState({
-      data: data,
-      size: 3
+    Api.db.post('section/numberOfCorrectAnswersPerStudent', {
+      quizId: pr.quiz,
+      sectionId: pr.section
+    })
+    .then(data => {
+      console.log(data);
+      me.setState({
+        data: data,
+        size: 3
+      });
     });
+    // var data = [
+    //   {
+    //     "name": "Kevin",
+    //     "Questions Correct": 1,
+    //     "Questions Incorrect": 2
+    //   },
+    //   {
+    //     "name": "Benny",
+    //     "Questions Correct": 2,
+    //     "Questions Incorrect": 1
+    //   }
+    // ];
   }
 
   render() {
