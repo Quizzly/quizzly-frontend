@@ -12,6 +12,10 @@ var width = 700,
      {
        field: 'Questions Incorrect',
        name: 'Questions Incorrect'
+     },
+     {
+       field: 'Questions Unanswered',
+       name: 'Questions Unanswered'
      }
    ],
    x = function(d) {

@@ -2,6 +2,7 @@ import s from 'MetricSectionStudentQuiz/MetricSectionStudentQuiz.scss'
 import StudentQuizBarChart from 'SectionStudentQuizBarChart/SectionStudentQuizBarChart.js'
 import Api from 'modules/Api.js'
 import Solution from 'Solution/Solution.js'
+import SectionStudentQuizPieChart from 'SectionStudentQuizPieChart/SectionStudentQuizPieChart.js'
 export default class MetricSectionStudentQuiz extends React.Component {
   static propTypes = {
   }
@@ -55,6 +56,11 @@ export default class MetricSectionStudentQuiz extends React.Component {
           incorrect={this.state.incorrect}
           unanswered={this.state.unanswered}
           size={this.state.size}
+        />
+        <SectionStudentQuizPieChart
+          correct={this.state.correct}
+          incorrect={this.state.incorrect}
+          unanswered={this.state.unanswered}
         />
         <Solution
           questions={this.state.questions}
