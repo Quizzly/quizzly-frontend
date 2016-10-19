@@ -1,5 +1,6 @@
 import s from 'MetricSectionStudent/MetricSectionStudent.scss'
 import SectionStudentBarChart from 'SectionStudentBarChart/SectionStudentBarChart.js'
+import SectionStudentPieChart from 'SectionStudentPieChart/SectionStudentPieChart.js'
 import Api from 'modules/Api.js'
 export default class MetricSectionStudent extends React.Component {
   static propTypes = {
@@ -10,7 +11,8 @@ export default class MetricSectionStudent extends React.Component {
     super(props);
     console.log("MetricSectionStudent");
     this.state = {
-      data: [],
+      pieData: [],
+      barData: [],
       size: 0
     }
   }
@@ -26,32 +28,25 @@ export default class MetricSectionStudent extends React.Component {
     var pr = props || this.props;
 
     Api.db.post('section/numberOfCorrectAndIncorrectAnswersForStudent', {
-      student: pr.student,
-      section: pr.section
+      studentId: pr.student,
+      sectionId: pr.section
     })
     .then(data => {
-      console.log(data);
       me.setState({
-        data: data,
+        barData: data,
         size: 4
       });
     });
-    // var data = [
-    //   {
-    //     "Name": "Business Attire",
-    //     "Questions Correct": 1,
-    //     "Questions Incorrect": 2
-    //   },
-    //   {
-    //     "Name": "Group Work",
-    //     "Questions Correct": 2,
-    //     "Questions Incorrect": 1
-    //   }
-    // ];
-    // this.setState({
-    //   data: data,
-    //   size: 3
-    // });
+    Api.db.post('section/getParticipationForStudent', {
+      studentId: pr.student,
+      courseId: pr.course
+    }).then(data => {
+      console.log("here");
+      console.log(data);
+      me.setState({
+        pieData: data
+      });
+    });
   }
 
   render() {
@@ -60,8 +55,11 @@ export default class MetricSectionStudent extends React.Component {
     return (
       <div className="">
         <SectionStudentBarChart
-          data={st.data}
+          data={st.barData}
           size={st.size}
+        />
+        <SectionStudentPieChart
+          data={st.pieData}
         />
       </div>
     )

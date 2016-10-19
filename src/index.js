@@ -13,6 +13,7 @@ import AskStudentQuestion from 'components/AskStudentQuestion/AskStudentQuestion
 import Download from 'components/Download/Download.js'
 import StudentList from 'components/StudentList/StudentList.js'
 import AnswerQuestion from 'components/AnswerQuestion/AnswerQuestion'
+import AnswerQuiz from 'components/AnswerQuiz/AnswerQuiz'
 import Socket from 'modules/Socket'
 
 
@@ -70,7 +71,8 @@ render((
       <Route path="s/quizzes" component={StudentQuizzes} />
       <Route path="s/metrics" component={StudentMetrics} />
     </Route>
-    <Route path="s/answer/:questionKey" component={AnswerQuestion}/>
+    <Route path="s/answer/question/:questionKey" component={AnswerQuestion}/>
+    <Route path="s/answer/quiz/:quizKey" component={AnswerQuiz}/>
     <Route path="/s/question/:questionId/:sectionId" component={AskStudentQuestion} />
     <Route path="/entrance" component={Entrance} />
     <Route path="/style" component={Style} />

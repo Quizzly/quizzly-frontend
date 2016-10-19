@@ -10,7 +10,11 @@ console.log('io.sails.url', io.sails.url);
 module.exports = {
     subscribeToSections: function() {
         io.socket.on('question', function gotQuestion (data) {
-            browserHistory.push('/s/answer/'+data.questionKey);
+            browserHistory.push('/s/answer/question/'+data.questionKey);
+        });
+
+        io.socket.on('quiz', function gotQuestion (data) {
+            browserHistory.push('/s/answer/quiz/'+data.quizKey);
         });
         return io.socket.get('/section/connect');
     }

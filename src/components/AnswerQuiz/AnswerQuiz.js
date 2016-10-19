@@ -1,4 +1,4 @@
-import s from 'AnswerQuestion/AnswerQuestion.scss'
+import s from 'AnswerQuiz/AnswerQuiz.scss'
 import Api from 'modules/Api.js'
 import {browserHistory} from 'react-router'
 import Utility from 'modules/Utility.js'
@@ -12,11 +12,12 @@ export default class AnswerQuestion extends React.Component {
     super(props);
 
     this.state = {
-      question: {
-        quiz: {
-          title: ''
-        }
-      },
+      questions: [{
+        quiz: {},
+        title: ''
+       }
+      ],
+      currentIndex: 0,
       timeRemaining: '',
       freeResponseAnswer: '',
       selectedAnswer: {},
@@ -25,7 +26,7 @@ export default class AnswerQuestion extends React.Component {
   }
 
   componentDidMount() {
-    this.setQuestionKey(this.props.params.questionKey);
+    this.setQuizKey(this.props.params.quizKey);
   }
 
   componentWillUnmount() {
@@ -33,24 +34,25 @@ export default class AnswerQuestion extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setQuestionKey(newProps.params.questionKey);
+    this.setQuizKey(newProps.params.quizKey);
   }
 
-  setQuestionKey(questionKey) {
+  setQuizKey(quizKey) {
     var me = this;
-    Api.db.post('question/getOpenQuestion', {questionKey: questionKey})
+    const currentIndex = this.state.currentIndex;
+    Api.db.post('quiz/getOpenQuiz', {quizKey: quizKey})
         .then(function(data){
-          var timeRemaining = Math.floor(data.timeRemaining);
-          var question = data.question;
-          question.answers = me.resetSelectedAnswers(question.answers);
+          const questions = data.quiz.questions;
+          const timeRemaining = questions[currentIndex].duration;
           me.setState({
-            question: question,
+            questions: questions,
             timeRemaining: timeRemaining
           });
           me.startTimer(timeRemaining);
         })
         .fail(function(){
-          browserHistory.push('/s/quizzes');
+          console.log('fail quizKey', quizKey);
+          // browserHistory.push('/s/quizzes');
         });
   }
 
@@ -61,13 +63,25 @@ export default class AnswerQuestion extends React.Component {
     this.clearCounter();
 
     var me = this;
+    const { questions, currentIndex} = this.state;
+    const question = questions[currentIndex];
+    const nextIndex = currentIndex+1;
+
     counter = setInterval(timer, 1000); //1000 will run it every 1 second
 
     function timer() {
       timeRemaining--;
       if(timeRemaining <= 0) {
         me.clearCounter();
-        browserHistory.push('/s/quizzes');
+        if(nextIndex < questions.length) {
+          me.setState({
+            currentIndex: nextIndex
+          });
+          me.startTimer(questions[nextIndex].duration);
+        } else {
+          browserHistory.push('/s/quizzes');
+        }
+
       }
       me.setState({timeRemaining: timeRemaining, counter: counter});
     }
@@ -86,7 +100,9 @@ export default class AnswerQuestion extends React.Component {
   }
 
   renderMultipleChoiceSection() {
-    return this.state.question.answers.map((answer, answerIndex) => {
+    const {questions, currentIndex} = this.state;
+    const question = questions[currentIndex];
+    return question.answers.map((answer, answerIndex) => {
       return (
           <div className="row answerRow" key={answerIndex}>
             <div className="columns one pt10">{answer.option + ".)"}</div>
@@ -104,11 +120,11 @@ export default class AnswerQuestion extends React.Component {
   }
 
   handleSelectedAnswer(answerIndex) {
-    var question = this.state.question;
+    const {questions, currentIndex} = this.state;
+    const question = questions[currentIndex];
     question.answers = this.resetSelectedAnswers(question.answers);
     question.answers[answerIndex].isSelected = true;
     this.setState({
-      question: question,
       selectedAnswer: question.answers[answerIndex]
     });
   }
@@ -136,8 +152,9 @@ export default class AnswerQuestion extends React.Component {
   }
 
   renderAnswerSection() {
-    var st = this.state;
-    switch(st.question.type) {
+    const { questions, currentIndex} = this.state;
+    const question = questions[currentIndex];
+    switch(question.type) {
       case "multipleChoice":
         return this.renderMultipleChoiceSection();
       case "freeResponse":
@@ -146,32 +163,37 @@ export default class AnswerQuestion extends React.Component {
   }
 
   submitAnswer() {
-    var st = this.state;
-    var pr = this.props;
-
-    Api.db.post('question/answer', {
-      questionKey: pr.params.questionKey,
-      answer: st.selectedAnswer.id
+    const {questionKey} = this.props;
+    const {questions, currentIndex, selectedAnswer} = this.state;
+    const question = questions[currentIndex];
+    const nextIndex = currentIndex+1;
+    const me = this;
+    Api.db.post('quiz/answer', {
+      questionKey: questionKey,
+      answer: selectedAnswer.id,
+      question: question.id
     }).then(function(){
-      browserHistory.push('/s/quizzes');
+      if(nextIndex < questions.length) {
+        me.setState({
+          currentIndex: nextIndex
+        });
+        const timeRemaining  = questions[nextIndex].duration;
+        me.startTimer(timeRemaining);
+      } else {
+        browserHistory.push('/s/quizzes');
+      }
     });
 
   }
 
-  render() {
-    var st = this.state;
-    var pr = this.props;
-    var me = this;
-    return (
-      <div className="answerQuestionContainer">
-        <div>
-          <img id="logo" src={Utility.LOGO_IMAGE_PATH} />
-          <span id="timer">{st.timeRemaining}</span>
-        </div>
+  renderQuestion() {
+    const {questions, currentIndex} = this.state;
+    const question = questions[currentIndex];
 
+    return (
         <div id="studentQuestion">
-          <div className="quizTitle">{(st.question.quiz.title + "").toUpperCase()}</div>
-          <div className="question">{st.question.text}</div>
+          <div className="quizTitle">{(question.quiz.title + "").toUpperCase()}</div>
+          <div className="question">{question.text}</div>
           <div className="questionBorder"></div>
           {this.renderAnswerSection()}
           <div
@@ -181,6 +203,18 @@ export default class AnswerQuestion extends React.Component {
             SUBMIT
           </div>
         </div>
+    )
+  }
+
+  render() {
+    var st = this.state;
+    return (
+      <div className="answerQuestionContainer">
+        <div>
+          <img id="logo" src={Utility.LOGO_IMAGE_PATH} />
+          <span id="timer">{st.timeRemaining}</span>
+        </div>
+        {this.renderQuestion()}
       </div>
     )
   }

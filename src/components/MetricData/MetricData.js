@@ -2,6 +2,7 @@ import s from 'MetricData/MetricData.scss'
 import MetricSectionStudentQuiz from 'MetricSectionStudentQuiz/MetricSectionStudentQuiz.js'
 import MetricSectionQuiz from 'MetricSectionQuiz/MetricSectionQuiz.js'
 import MetricSectionStudent from 'MetricSectionStudent/MetricSectionStudent.js'
+import MetricSection from 'MetricSection/MetricSection.js'
 export default class MetricData extends React.Component {
   static propTypes = {
   }
@@ -61,6 +62,16 @@ export default class MetricData extends React.Component {
         <MetricSectionStudent
           section={pr.section}
           student={pr.student}
+          course={pr.course}
+        />
+      )
+    }
+    //Specific section
+    else if(pr.section != -1 && pr.student == -1 && pr.quiz == -1 && pr.question == -1){
+      return (
+        <MetricSection
+          section={pr.section}
+          course={pr.course}
         />
       )
     }

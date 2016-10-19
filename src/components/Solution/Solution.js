@@ -12,12 +12,12 @@ export default class Solution extends React.Component {
 
   componentDidMount() {
   }
-  renderFreeResponse(question){
+  renderFreeResponse(question, unanswered){
     return (
       <div className="flex mb20 flexVertical">
         <input
           type="text"
-          className={`normalInput lightGreenBackground`}
+          className={`normalInput ${unanswered ? "lightRedBackground" : "lightGreenBackground"}`}
           value={question.answerText}
           placeholder=""
         />
@@ -61,7 +61,7 @@ export default class Solution extends React.Component {
               <span> {question.studentUnanswered ? "unanswered" : ""} </span>
             </div>
             <div>
-              { question.answers.length > 0 ? this.renderAnswers(question) : this.renderFreeResponse(question) }
+              { question.answers.length > 0 ? this.renderAnswers(question) : this.renderFreeResponse(question, question.studentUnanswered ? true:false) }
             </div>
           </div>
         )

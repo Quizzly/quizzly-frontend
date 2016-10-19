@@ -1,4 +1,4 @@
-import s from 'SectionStudentBarChart/SectionStudentBarChart.scss'
+import s from 'SectionBarChart/SectionBarChart.scss'
 var rd3b = require('react-d3-basic');
 
 var BarStackChart = rd3b.BarStackChart;
@@ -6,16 +6,8 @@ var width = 700,
    height = 400,
    chartSeries = [
      {
-       field: 'Questions Correct',
-       name: 'Questions Correct'
-     },
-     {
-       field: 'Questions Incorrect',
-       name: 'Questions Incorrect'
-     },
-     {
-       field: 'Questions Unanswered',
-       name: 'Questions Unanswered'
+       field: 'Student Attendance',
+       name: 'Student Attendance'
      }
    ],
    x = function(d) {
@@ -23,8 +15,7 @@ var width = 700,
    },
    xScale = 'ordinal',
    yTickFormat = d3.format(".2s");
-
-export default class SectionStudentBarChart extends React.Component {
+export default class SectionBarChart extends React.Component {
   static propTypes = {
     dummy: React.PropTypes.object.isRequired,
   }
