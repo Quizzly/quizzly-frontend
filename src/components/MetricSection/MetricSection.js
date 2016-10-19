@@ -1,14 +1,14 @@
-import s from 'MetricSectionQuiz/MetricSectionQuiz.scss'
-import SectionQuizBarChart from 'SectionQuizBarChart/SectionQuizBarChart.js'
+import s from 'MetricSection/MetricSection.scss'
+import SectionBarChart from 'SectionBarChart/SectionBarChart.js'
 import Api from 'modules/Api.js'
-export default class MetricSectionQuiz extends React.Component {
+export default class MetricSection extends React.Component {
   static propTypes = {
     dummy: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
-    console.log("MetricSectionQuiz");
+
     this.state = {
       data: [],
       size: 0
@@ -25,17 +25,30 @@ export default class MetricSectionQuiz extends React.Component {
     var me = this;
     var pr = props || this.props;
 
-    Api.db.post('section/numberOfCorrectAnswersPerStudent', {
-      quizId: pr.quiz,
+    Api.db.post('section/sectionStudentAttendance', {
+      courseId: pr.course,
       sectionId: pr.section
     })
     .then(data => {
       console.log(data);
       me.setState({
         data: data,
-        size: 3
+        size: 6
       });
     });
+    // this.setState({
+    //   data : [
+    //     {
+    //       "Name": "Business",
+    //       "Student Attendance": 5
+    //     },
+    //     {
+    //       "Name": "Group Work",
+    //       "Student Attendance": 3
+    //     }
+    //   ]
+    // });
+
   }
 
   render() {
@@ -43,7 +56,7 @@ export default class MetricSectionQuiz extends React.Component {
     var pr = this.props;
     return (
       <div className="">
-        <SectionQuizBarChart
+        <SectionBarChart
           data={st.data}
           size={st.size}
         />

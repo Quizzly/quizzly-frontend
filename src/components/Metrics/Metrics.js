@@ -61,9 +61,9 @@ export default class Metrics extends React.Component {
     var me = this;
     $.when(
       Api.db.find('section', {course: course.id}),
-      Api.db.post('student/getStudentsByCourseId/' + course.id),
+      // Api.db.post('student/getStudentsByCourseId/' + course.id),
       Api.db.find('quiz', {course: course.id})
-    ).then(function(sections, students, quizzes) {
+    ).then(function(sections, quizzes) {
       console.log("Sections: ")
       console.log(sections);
       // console.log("sections", sections);
@@ -71,7 +71,7 @@ export default class Metrics extends React.Component {
       // console.log("quizzes", quizzes);
       me.setState({
         sections: sections[0],
-        students: students[0],
+        students: [],
         quizzes: quizzes[0],
         questions: [],
         course: course
@@ -113,7 +113,7 @@ export default class Metrics extends React.Component {
         me.setState({
           selectedSection: -1,
           selectedStudent: -1,
-          students: students,
+          students: [],
 
           isAllSectionsOptionAvailable: true,
           isAllStudentsOptionAvailable: true,
@@ -129,15 +129,18 @@ export default class Metrics extends React.Component {
     console.log(this.state.students);
       console.log(this.state.sections);
     if(index != -1) { // specific student
-      var student = this.state.students[index];
-      Api.db.post('section/getSectionByStudentAndCourse/', {courseId: this.state.course.id, studentId: student.id})
-      .then(function(sections) {
-        console.log(sections);
-        me.setState({
-          selectedStudent: index,
-          sections: [sections],
-        });
-      });
+      // var student = this.state.students[index];
+      // Api.db.post('section/getSectionByStudentAndCourse/', {courseId: this.state.course.id, studentId: student.id})
+      // .then(function(sections) {
+      //   console.log(sections);
+      //   me.setState({
+      //     selectedStudent: index,
+      //     sections: [sections],
+      //   });
+      // });
+      this.setState({
+        selectedStudent: index
+      })
     } else { // all students
       Api.db.find('section', {course: this.state.course.id})
       .then(function(sections) {
@@ -206,6 +209,7 @@ export default class Metrics extends React.Component {
           student={this.state.renderedStudent}
           quiz={this.state.renderedQuiz}
           question={this.state.renderedQuestion}
+          course={this.props.course.id}
         />
       )
     }
