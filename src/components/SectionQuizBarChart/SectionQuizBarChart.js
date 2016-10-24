@@ -1,7 +1,7 @@
 import s from 'SectionQuizBarChart/SectionQuizBarChart.scss'
 var rd3b = require('react-d3-basic');
 
-var BarChart = rd3b.BarChart;
+var BarStackChart = rd3b.BarStackChart;
 var width = 700,
     height = 400,
     title = "Bar Chart",
@@ -16,7 +16,8 @@ var width = 700,
     },
     xScale = 'ordinal',
     xLabel = "Student",
-    yLabel = "Total # questions";
+    yLabel = "Total # questions",
+    yTickFormat = d3.format(".2s");
 
 export default class SectionQuizBarChart extends React.Component {
   static propTypes = {
@@ -25,7 +26,7 @@ export default class SectionQuizBarChart extends React.Component {
 
   constructor(props) {
     super(props);
-
+    console.log("Size is " + props.size);
     this.state = {
       yTicks : [props.size]
     }
@@ -34,6 +35,7 @@ export default class SectionQuizBarChart extends React.Component {
   componentWillReceiveProps(nextProps){
     // console.log("props changed");
     // console.log(nextProps.student);
+    console.log("New size is " + nextProps.size);
     this.setState({
       yTicks : [nextProps.size]
     });
@@ -45,6 +47,30 @@ export default class SectionQuizBarChart extends React.Component {
   componentDidMount() {
   }
 
+  renderChart(){
+    return (
+      <BarStackChart
+        data= {this.props.data}
+        width= {width}
+        height= {height}
+        chartSeries = {chartSeries}
+        x= {x}
+        xScale= {xScale}
+        yTicks= {this.state.yTicks}/>
+    )
+  }
+
+  render() {
+    var st = this.state;
+    var pr = this.props;
+    return (
+      <div className="chartContainer">
+        {this.renderChart()}
+      </div>
+    )
+  }
+
+  /*
   render() {
     var st = this.state;
     var pr = this.props;
@@ -65,4 +91,5 @@ export default class SectionQuizBarChart extends React.Component {
       </div>
     )
   }
+  */
 }

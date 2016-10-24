@@ -1,4 +1,4 @@
-import s from 'MetricSectionQuiz/MetricSectionQuiz.scss'
+import s from 'MetricQuiz/MetricQuiz.scss'
 import SectionQuizBarChart from 'SectionQuizBarChart/SectionQuizBarChart.js'
 import Api from 'modules/Api.js'
 export default class MetricSectionQuiz extends React.Component {
@@ -16,28 +16,43 @@ export default class MetricSectionQuiz extends React.Component {
   }
 
   componentDidMount() {
+    console.log("component mounted");
     this.renderChart();
   }
   componentWillReceiveProps(nextProps){
       this.renderChart(nextProps);
   }
   renderChart(props){
+    console.log("quiz js render chart func called");
     var me = this;
     var pr = props || this.props;
 
-    Api.db.post('section/numberOfCorrectAnswersPerQuiz', { //Add functionality later
+    Api.db.post('quiz/numberOfCorrectAnswersPerQuiz', {
       quizId: pr.quiz
     })
     .then(data => {
       console.log(data);
       me.setState({
         data: data,
-        size: 3 //Why is size 3?
+        size: 1
       });
     });
+    // var data = [
+    //   {
+    //     "name": "Kevin",
+    //     "Questions Correct": 1,
+    //     "Questions Incorrect": 2
+    //   },
+    //   {
+    //     "name": "Benny",
+    //     "Questions Correct": 2,
+    //     "Questions Incorrect": 1
+    //   }
+    // ];
   }
 
   render() {
+    console.log("render in metric quiz called");
     var st = this.state;
     var pr = this.props;
     return (

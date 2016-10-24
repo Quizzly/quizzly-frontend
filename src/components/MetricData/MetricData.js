@@ -2,6 +2,9 @@ import s from 'MetricData/MetricData.scss'
 import MetricSectionStudentQuiz from 'MetricSectionStudentQuiz/MetricSectionStudentQuiz.js'
 import MetricSectionQuiz from 'MetricSectionQuiz/MetricSectionQuiz.js'
 import MetricSectionStudent from 'MetricSectionStudent/MetricSectionStudent.js'
+
+import MetricQuiz from 'MetricQuiz/MetricQuiz.js' //Import child class
+
 export default class MetricData extends React.Component {
   static propTypes = {
   }
@@ -18,6 +21,7 @@ export default class MetricData extends React.Component {
   }
 
   componentDidMount() {
+
   }
 
   // componentWillReceiveProps(nextProps){
@@ -28,7 +32,7 @@ export default class MetricData extends React.Component {
   //     question: nextProps.question
   //   })
   // }
-  renderChart(){
+  renderChart() {
     var pr = this.props;
     console.log("rendering chart");
     console.log(pr.section);
@@ -47,7 +51,6 @@ export default class MetricData extends React.Component {
     }
     //Specific section and quiz
     else if(pr.section != -1 && pr.student == -1 && pr.quiz != -1 && pr.question == -1){
-      console.log("here");
       return (
         <MetricSectionQuiz
           section={pr.section}
@@ -64,6 +67,19 @@ export default class MetricData extends React.Component {
         />
       )
     }
+
+    //Specific quiz selection only
+    else if(pr.section == -1 && pr.student == -1 && pr.quiz != -1 && pr.question == -1)
+    {
+      console.log("in quiz section");
+      return(
+      <MetricQuiz
+        quiz={pr.quiz}
+      />
+    )
+      console.log("after quiz section");
+    }
+
   }
   render() {
     var st = this.state;
