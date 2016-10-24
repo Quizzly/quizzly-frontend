@@ -120,6 +120,13 @@ export default class AnswerQuestion extends React.Component {
     return answers;
   }
 
+    handleFreeResponseChange() {
+        const value = this.refs.freeResponseAnswer.value;
+        this.setState({
+            freeResponseAnswer: value
+        });
+    }
+
   renderFreeResponseSection() {
     var st = this.state;
     return (
@@ -132,13 +139,6 @@ export default class AnswerQuestion extends React.Component {
           <div className="charCount">{st.freeResponseAnswer.length}</div>
         </div>
     );
-  }
-
-  handleFreeResponseChange() {
-    const value = this.refs.freeResponseAnswer.value;
-    this.setState({
-      freeResponseAnswer: value
-    });
   }
 
   renderAnswerSection() {

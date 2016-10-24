@@ -137,6 +137,13 @@ export default class AnswerQuestion extends React.Component {
     return answers;
   }
 
+    handleFreeResponseChange() {
+        const value = this.refs.freeResponseAnswer.value;
+        this.setState({
+            freeResponseAnswer: value
+        });
+    }
+
   renderFreeResponseSection() {
     var st = this.state;
     return (
@@ -151,12 +158,6 @@ export default class AnswerQuestion extends React.Component {
     );
   }
 
-  handleFreeResponseChange() {
-    const value = this.refs.freeResponseAnswer.value;
-    this.setState({
-      freeResponseAnswer: value
-    });
-  }
 
   renderAnswerSection() {
     const { questions, currentIndex} = this.state;
