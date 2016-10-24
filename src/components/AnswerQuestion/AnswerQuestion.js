@@ -171,7 +171,7 @@ export default class AnswerQuestion extends React.Component {
       questionKey: pr.params.questionKey,
       answer: answer
     }).then(function(){
-      this.setState({
+      me.setState({
         timeRemaining: ''
       });
       me.clearCounter();
