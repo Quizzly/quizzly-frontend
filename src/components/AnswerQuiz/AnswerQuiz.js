@@ -3,6 +3,7 @@ import Api from 'modules/Api.js'
 import {browserHistory} from 'react-router'
 import Utility from 'modules/Utility.js'
 
+let counter = {};
 export default class AnswerQuestion extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
@@ -17,6 +18,8 @@ export default class AnswerQuestion extends React.Component {
         title: ''
        }
       ],
+      quizTitle: '',
+      quizId: '',
       currentIndex: 0,
       timeRemaining: '',
       freeResponseAnswer: '',
@@ -43,16 +46,19 @@ export default class AnswerQuestion extends React.Component {
     Api.db.post('quiz/getOpenQuiz', {quizKey: quizKey})
         .then(function(data){
           const questions = data.quiz.questions;
+          const quizId = data.quiz.id;
+          const quizTitle = data.quiz.title;
           const timeRemaining = questions[currentIndex].duration;
           me.setState({
             questions: questions,
+            quizId: quizId,
+            quizTitle: quizTitle,
             timeRemaining: timeRemaining
           });
           me.startTimer(timeRemaining);
         })
         .fail(function(){
-          console.log('fail quizKey', quizKey);
-          // browserHistory.push('/s/quizzes');
+          browserHistory.push('/s/quizzes');
         });
   }
 
@@ -63,8 +69,7 @@ export default class AnswerQuestion extends React.Component {
     this.clearCounter();
 
     var me = this;
-    const { questions, currentIndex} = this.state;
-    const question = questions[currentIndex];
+    const { currentIndex, questions } = this.state;
     const nextIndex = currentIndex+1;
 
     counter = setInterval(timer, 1000); //1000 will run it every 1 second
@@ -72,7 +77,6 @@ export default class AnswerQuestion extends React.Component {
     function timer() {
       timeRemaining--;
       if(timeRemaining <= 0) {
-        me.clearCounter();
         if(nextIndex < questions.length) {
           me.setState({
             currentIndex: nextIndex
@@ -81,18 +85,14 @@ export default class AnswerQuestion extends React.Component {
         } else {
           browserHistory.push('/s/quizzes');
         }
-
       }
-      me.setState({timeRemaining: timeRemaining, counter: counter});
+      me.setState({timeRemaining: timeRemaining});
     }
   }
 
   clearCounter() {
-    var st = this.state;
-    if(st.counter){
-      clearInterval(st.counter);
-      st.counter = null;
-    }
+    clearInterval(counter);
+    counter = {};
   }
 
   componentWillUnmount() {
@@ -137,19 +137,27 @@ export default class AnswerQuestion extends React.Component {
     return answers;
   }
 
+    handleFreeResponseChange() {
+        const value = this.refs.freeResponseAnswer.value;
+        this.setState({
+            freeResponseAnswer: value
+        });
+    }
+
   renderFreeResponseSection() {
     var st = this.state;
     return (
         <div className="pl20 pr20">
         <textarea
+            ref="freeResponseAnswer"
             className="freeResponse"
-            value={st.freeResponseAnswer}
             onChange={this.handleFreeResponseChange.bind(this)}
         />
           <div className="charCount">{st.freeResponseAnswer.length}</div>
         </div>
     );
   }
+
 
   renderAnswerSection() {
     const { questions, currentIndex} = this.state;
@@ -163,14 +171,27 @@ export default class AnswerQuestion extends React.Component {
   }
 
   submitAnswer() {
-    const {questionKey} = this.props;
+    const {freeResponseAnswer} = this.refs;
+    const {quizKey} = this.props.params;
     const {questions, currentIndex, selectedAnswer} = this.state;
     const question = questions[currentIndex];
     const nextIndex = currentIndex+1;
     const me = this;
+    var answer = null;
+
+
+    switch(question.type) {
+      case "multipleChoice":
+        answer = selectedAnswer.id;
+        break;
+      case "freeResponse":
+        answer = freeResponseAnswer.value;
+        break;
+    }
+
     Api.db.post('quiz/answer', {
-      questionKey: questionKey,
-      answer: selectedAnswer.id,
+      quizKey: quizKey,
+      answer: answer,
       question: question.id
     }).then(function(){
       if(nextIndex < questions.length) {
@@ -187,12 +208,12 @@ export default class AnswerQuestion extends React.Component {
   }
 
   renderQuestion() {
-    const {questions, currentIndex} = this.state;
+    const {questions, currentIndex, quizTitle} = this.state;
     const question = questions[currentIndex];
 
     return (
         <div id="studentQuestion">
-          <div className="quizTitle">{(question.quiz.title + "").toUpperCase()}</div>
+          <div className="quizTitle">{(quizTitle+ "").toUpperCase()}</div>
           <div className="question">{question.text}</div>
           <div className="questionBorder"></div>
           {this.renderAnswerSection()}
@@ -219,5 +240,3 @@ export default class AnswerQuestion extends React.Component {
     )
   }
 }
-
-var counter;
