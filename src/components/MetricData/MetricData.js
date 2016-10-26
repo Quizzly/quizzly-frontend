@@ -7,6 +7,7 @@ import MetricQuiz from 'MetricQuiz/MetricQuiz.js' //Import child class
 
 export default class MetricData extends React.Component {
   static propTypes = {
+
   }
 
   constructor(props) {
@@ -34,11 +35,11 @@ export default class MetricData extends React.Component {
   // }
   renderChart() {
     var pr = this.props;
-    console.log("rendering chart");
-    console.log(pr.section);
-    console.log(pr.student);
-    console.log(pr.quiz);
-    console.log(pr.question);
+    console.log("MetricData: renderChart");
+    console.log("Section is " + pr.section);
+    console.log("Student is " + pr.student);
+    console.log("Quiz is " + pr.quiz);
+    console.log("Question is " + pr.question);
     //Specific section, student, and quiz
     if(pr.section != -1 && pr.student != -1 && pr.quiz != -1 && pr.question == -1){
       return (
@@ -71,17 +72,15 @@ export default class MetricData extends React.Component {
     //Specific quiz selection only
     else if(pr.section == -1 && pr.student == -1 && pr.quiz != -1 && pr.question == -1)
     {
-      console.log("in quiz section");
       return(
-      <MetricQuiz
-        quiz={pr.quiz}
-      />
-    )
-      console.log("after quiz section");
+        <MetricQuiz
+          quiz={pr.quiz}
+          />
+      )
     }
 
   }
-  render() {
+  render() { //You're returning the thing to be displayed on screen?
     var st = this.state;
     var pr = this.props;
     return (

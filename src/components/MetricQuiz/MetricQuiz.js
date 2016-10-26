@@ -1,31 +1,32 @@
 import s from 'MetricQuiz/MetricQuiz.scss'
-import SectionQuizBarChart from 'SectionQuizBarChart/SectionQuizBarChart.js'
+import QuizBarChart from 'QuizBarChart/QuizBarChart.js'
 import Api from 'modules/Api.js'
 export default class MetricSectionQuiz extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    dummy: React.PropTypes.object.isRequired, //What object is required?
   }
 
   constructor(props) {
     super(props);
-    console.log("MetricQuiz");
+    console.log("MetricQuiz: Constructor");
     this.state = {
       data: [],
       size: 0
     }
   }
 
-  componentDidMount() {
-    console.log("component mounted");
+  componentDidMount() { //Only called once?
+    console.log("MetricQuiz: componentDidMount");
     this.renderChart();
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps){ //Called when mounted but updated with new props or just updated?
+    console.log("MetricQuiz: componentWillReceiveProps");
       this.renderChart(nextProps);
   }
   renderChart(props){
-    console.log("quiz js render chart func called");
+    console.log("MetricQuiz: renderChart");
     var me = this;
-    var pr = props || this.props;
+    var pr = props || me.props;
 
     Api.db.post('quiz/numberOfCorrectAnswersPerQuiz', {
       quizId: pr.quiz
@@ -34,30 +35,18 @@ export default class MetricSectionQuiz extends React.Component {
       console.log(data);
       me.setState({
         data: data,
-        size: 1
+        size: 2 //What is size?
       });
     });
-    // var data = [
-    //   {
-    //     "name": "Kevin",
-    //     "Questions Correct": 1,
-    //     "Questions Incorrect": 2
-    //   },
-    //   {
-    //     "name": "Benny",
-    //     "Questions Correct": 2,
-    //     "Questions Incorrect": 1
-    //   }
-    // ];
   }
 
   render() {
-    console.log("render in metric quiz called");
+    console.log("MetricQuiz: render");
     var st = this.state;
     var pr = this.props;
     return (
       <div className="">
-        <SectionQuizBarChart
+        <QuizBarChart
           data={st.data}
           size={st.size}
         />
