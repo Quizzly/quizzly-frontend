@@ -3,6 +3,8 @@ import Api from 'modules/Api.js'
 import {browserHistory} from 'react-router'
 import Utility from 'modules/Utility.js'
 
+
+let counter = {};
 export default class AnswerQuestion extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
@@ -18,8 +20,8 @@ export default class AnswerQuestion extends React.Component {
         }
       },
       timeRemaining: '',
-      freeResponseAnswer: '',
       selectedAnswer: {},
+      freeResponseAnswer: ''
 
     };
   }
@@ -50,6 +52,7 @@ export default class AnswerQuestion extends React.Component {
           me.startTimer(timeRemaining);
         })
         .fail(function(){
+          me.clearCounter();
           browserHistory.push('/s/quizzes');
         });
   }
@@ -66,19 +69,15 @@ export default class AnswerQuestion extends React.Component {
     function timer() {
       timeRemaining--;
       if(timeRemaining <= 0) {
-        me.clearCounter();
         browserHistory.push('/s/quizzes');
       }
-      me.setState({timeRemaining: timeRemaining, counter: counter});
+      me.setState({timeRemaining: timeRemaining});
     }
   }
 
   clearCounter() {
-    var st = this.state;
-    if(st.counter){
-      clearInterval(st.counter);
-      st.counter = null;
-    }
+      clearInterval(counter);
+      counter = {};
   }
 
   componentWillUnmount() {
@@ -93,7 +92,7 @@ export default class AnswerQuestion extends React.Component {
             <div className="columns eleven">
               <div
                   className={`answer ${answer.isSelected ? " selected" : ""}`}
-                  onClick={this.handleSelectedAnswer.bind(this, answerIndex)}
+                  onClick={() => this.handleSelectedAnswer(answerIndex)}
               >
                 {answer.text}
               </div>
@@ -121,13 +120,20 @@ export default class AnswerQuestion extends React.Component {
     return answers;
   }
 
+    handleFreeResponseChange() {
+        const value = this.refs.freeResponseAnswer.value;
+        this.setState({
+            freeResponseAnswer: value
+        });
+    }
+
   renderFreeResponseSection() {
     var st = this.state;
     return (
         <div className="pl20 pr20">
         <textarea
+            ref="freeResponseAnswer"
             className="freeResponse"
-            value={st.freeResponseAnswer}
             onChange={this.handleFreeResponseChange.bind(this)}
         />
           <div className="charCount">{st.freeResponseAnswer.length}</div>
@@ -148,11 +154,27 @@ export default class AnswerQuestion extends React.Component {
   submitAnswer() {
     var st = this.state;
     var pr = this.props;
+    var refs = this.refs;
+    var me = this;
+    var answer = null;
+
+    switch(st.question.type) {
+      case "multipleChoice":
+        answer = st.selectedAnswer.id;
+        break;
+      case "freeResponse":
+        answer = refs.freeResponseAnswer.value;
+        break;
+    }
 
     Api.db.post('question/answer', {
       questionKey: pr.params.questionKey,
-      answer: st.selectedAnswer.id
+      answer: answer
     }).then(function(){
+      me.setState({
+        timeRemaining: ''
+      });
+      me.clearCounter();
       browserHistory.push('/s/quizzes');
     });
 
@@ -186,4 +208,4 @@ export default class AnswerQuestion extends React.Component {
   }
 }
 
-var counter;
+

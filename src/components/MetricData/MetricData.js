@@ -79,6 +79,15 @@ export default class MetricData extends React.Component {
       )
     }
 
+    //No selection
+    else if(pr.section == -1  && pr.student == -1 && pr.quiz == -1 && pr.question == -1){
+      return (
+        <MetricSection
+          course={pr.course}
+        />
+      )
+    }
+
   }
   render() { //You're returning the thing to be displayed on screen?
     var st = this.state;
