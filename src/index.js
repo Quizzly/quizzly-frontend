@@ -50,6 +50,13 @@ function checkSession(nextState, replace, callback) {
         // console.log('Admin Login? ', Session.isAdmin());
       });
     }
+  }).fail(() => {
+    console.log('fail');
+    replace({
+      pathname: '/entrance',
+      state: { nextPathname: nextState.location.pathname }
+    });
+    callback();
   });
 }
 
