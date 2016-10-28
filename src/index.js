@@ -21,7 +21,7 @@ import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
 
 function checkSession(nextState, replace, callback) {
-  Api.db.post('me')
+  Api.db.post('auth/user')
   .then((user) => {
     console.log("trying to session", user);
     if(!user) { // if login fails
