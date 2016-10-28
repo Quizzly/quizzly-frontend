@@ -24,11 +24,9 @@ export default class MetricSection extends React.Component {
   renderChart(props){
     var me = this;
     var pr = props || this.props;
-
-    Api.db.post('section/sectionStudentAttendance', {
-      courseId: pr.course,
-      sectionId: pr.section
-    })
+    var coursesection = pr.section ? {courseId: pr.course,
+    sectionId: pr.section} : {courseId: pr.course};
+    Api.db.post('section/sectionStudentAttendance', coursesection)
     .then(data => {
       console.log(data);
       me.setState({

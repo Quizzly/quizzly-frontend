@@ -29,7 +29,8 @@ export default class MetricSectionStudent extends React.Component {
 
     Api.db.post('section/numberOfCorrectAndIncorrectAnswersForStudent', {
       studentId: pr.student,
-      sectionId: pr.section
+      sectionId: pr.section,
+      courseId: pr.course
     })
     .then(data => {
       me.setState({
