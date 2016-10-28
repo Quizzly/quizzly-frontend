@@ -6,6 +6,9 @@ var io = sailsIOClient(socketIOClient);
 
 
 io.sails.url = Api.baseUrl;
+io.set('transports', ['xhr-polling']);
+io.set('polling duration', 5);
+
 console.log('io.sails.url', io.sails.url);
 module.exports = {
     subscribeToSections: function() {
