@@ -178,6 +178,7 @@ export default class AnswerQuestion extends React.Component {
     const nextIndex = currentIndex+1;
     const me = this;
     var answer = null;
+    var text = null;
 
 
     switch(question.type) {
@@ -185,14 +186,15 @@ export default class AnswerQuestion extends React.Component {
         answer = selectedAnswer.id;
         break;
       case "freeResponse":
-        answer = freeResponseAnswer.value;
+        text = freeResponseAnswer.value;
         break;
     }
 
     Api.db.post('quiz/answer', {
       quizKey: quizKey,
       answer: answer,
-      question: question.id
+      question: question.id,
+      text: text
     }).then(function(){
       if(nextIndex < questions.length) {
         me.setState({
