@@ -157,19 +157,21 @@ export default class AnswerQuestion extends React.Component {
     var refs = this.refs;
     var me = this;
     var answer = null;
+    var text = null;
 
     switch(st.question.type) {
       case "multipleChoice":
         answer = st.selectedAnswer.id;
         break;
       case "freeResponse":
-        answer = refs.freeResponseAnswer.value;
+        text = refs.freeResponseAnswer.value;
         break;
     }
 
     Api.db.post('question/answer', {
       questionKey: pr.params.questionKey,
-      answer: answer
+      answer: answer,
+      text: text
     }).then(function(){
       me.setState({
         timeRemaining: ''
