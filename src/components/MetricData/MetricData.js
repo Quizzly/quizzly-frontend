@@ -65,6 +65,7 @@ export default class MetricData extends React.Component {
         <MetricSectionStudent
           section={pr.section}
           student={pr.student}
+          course={pr.course}
         />
       )
     }

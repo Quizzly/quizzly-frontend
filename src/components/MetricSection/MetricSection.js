@@ -34,19 +34,6 @@ export default class MetricSection extends React.Component {
         size: 6
       });
     });
-    // this.setState({
-    //   data : [
-    //     {
-    //       "Name": "Business",
-    //       "Student Attendance": 5
-    //     },
-    //     {
-    //       "Name": "Group Work",
-    //       "Student Attendance": 3
-    //     }
-    //   ]
-    // });
-
   }
 
   render() {
