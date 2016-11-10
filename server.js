@@ -24,6 +24,22 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get('/downloads/client/mac', function(req, res) {
+  const filename = "Quizzly-OSX.zip";
+  res.set({
+    "Content-Disposition": 'attachment; filename="'+filename+'"',
+  });
+  res.sendFile(path.join(__dirname, 'downloads/client/'+filename));
+});
+
+app.get('/downloads/client/windows', function(req, res) {
+  const filename = "Quizzly-WIN.zip";
+  res.set({
+    "Content-Disposition": 'attachment; filename="'+filename+'"',
+  });
+  res.sendFile(path.join(__dirname, 'downloads/client/'+filename));
+});
+
 app.post('/login', function(req, res) {
   var user = {
     email: req.body.email,
