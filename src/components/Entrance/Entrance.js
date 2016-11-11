@@ -220,7 +220,7 @@ export default class Entrance extends React.Component {
             <a href="#" className="bold">sign in with Blackboard</a>
           </div>
         </div>
-        <a className="footer">About</a>
+        <a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>
       </div>
     )
   }
