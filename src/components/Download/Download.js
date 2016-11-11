@@ -25,8 +25,8 @@ export default class Download extends React.Component {
       <div className="downloadContainer">
         <div className="flexHorizontal">
         <ul>
-          <li><a href="downloads/client/mac">mac</a></li>
-          <li><a href="downloads/client/windows">windows</a></li>
+          <li><a href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-OSX.zip">mac</a></li>
+          <li><a href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-win32-x64.zip">windows</a></li>
         </ul>
         </div>
       </div>
