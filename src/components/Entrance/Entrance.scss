@@ -49,6 +49,8 @@
     background-color: none;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.1);
     &:hover {
       text-decoration: underline;
     }

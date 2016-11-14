@@ -50,6 +50,7 @@ export default class Entrance extends React.Component {
   }
 
   handleEntranceSubmit() {
+    this.setState({status: "pending"});
     var st = this.state;
     var firstName = "", lastName = "";
     var email = st.email.trim();
@@ -82,6 +83,7 @@ export default class Entrance extends React.Component {
       })
       .fail((err) => {
         alert("Sign in failed!");
+        this.setState({status: "initial"});
         console.log(err);
       });
     } else {
@@ -115,6 +117,7 @@ export default class Entrance extends React.Component {
       })
       .fail((err) => {
         alert("Sign up failed!");
+        this.setState({status: "initial"});
         console.log(err);
       });
     }
@@ -212,9 +215,13 @@ export default class Entrance extends React.Component {
             {isSignUpNewUser ? this.renderSignUpInputs() : null}
             {this.renderSignInInputs()}
             {isSignUpNewUser ? this.renderUserCheckBox() : null}
-            <div className="signButton">
+            <button
+              className="signButton"
+              disabled={st.status == "pending" ? true : false}
+              onClick={this.handleEntranceSubmit.bind(this)}
+            >
               {isSignUpNewUser ? "SIGN UP" : "SIGN IN"}
-            </div>
+            </button>
           </div>
           <div className="subsubtitle">Or switch to&nbsp;
             <a className="bold pointer" onClick={this.swapEntryType.bind(this)}>{isSignUpNewUser ? "sign in" : "sign up" }</a>
