@@ -1,9 +1,10 @@
 import s from 'StudentList/StudentList.scss'
 import {browserHistory} from 'react-router'
+import Api from 'modules/Api'
 
 export default class StudentList extends React.Component {
   static propTypes = {
-    dummy: React.PropTypes.object.isRequired,
+    // dummy: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -15,7 +16,7 @@ export default class StudentList extends React.Component {
   }
 
   componentDidMount() {
-    Api.db.post('student/findinorder')
+    Api.db.post('student/getStudentsBySectionId', {id: "582942f04af8bd1c00a014fc"})
     .then(students => {
       console.log("students", students);
       this.setState({students: students});
@@ -27,9 +28,9 @@ export default class StudentList extends React.Component {
     var pr = this.props;
     return (
       <div className="studentListContainer">
-        {this.state.students.map(function(student) {
+        {this.state.students.map(function(student, i) {
           return(
-            <div className="row">
+            <div key={i} className="row">
               {/*<div className="columns three">
                 {student.firstName} {student.lastName}
               </div>*/}
