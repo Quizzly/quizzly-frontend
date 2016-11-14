@@ -4,6 +4,7 @@ import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
 import Socket from 'modules/Socket.js'
+import StringValidator from 'modules/StringValidator.js'
 
 export default class Entrance extends React.Component {
   static propTypes = {
@@ -92,7 +93,10 @@ export default class Entrance extends React.Component {
       if (!firstName || !lastName) {
         return;
       }
-
+      if(!StringValidator.isEmail(email)){
+        alert("Please enter a valid email address.")
+        return;
+      }
       Api.db.post('signup', {
         email: email,
         password: password,
