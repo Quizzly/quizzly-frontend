@@ -56,6 +56,7 @@ export default class Entrance extends React.Component {
     var email = st.email.trim();
     var password = st.password.trim();
     if (!password || !email) {
+      this.setState({status: "initial"});
       return;
     }
     if(st.isSignIn) {
@@ -92,6 +93,7 @@ export default class Entrance extends React.Component {
       var isProfessor = st.isProfessor;
 
       if (!firstName || !lastName) {
+        this.setState({status: "initial"});
         return;
       }
 
@@ -136,21 +138,21 @@ export default class Entrance extends React.Component {
 
   chooseSignButtonText() {
     const {
-      isSignUpNewUser,
+      isSignIn,
       status
     } = this.state;
 
-    if(isSignUpNewUser) {
-      if(status == "pending") {
-        return "SIGNING UP...";
-      } else {
-        return "SIGN UP";
-      }
-    } else {
+    if(isSignIn) {
       if(status == "pending") {
         return "SIGNING IN...";
       } else {
         return "SIGN IN";
+      }
+    } else {
+      if(status == "pending") {
+        return "SIGNING UP...";
+      } else {
+        return "SIGN UP";
       }
     }
   }
@@ -232,7 +234,7 @@ export default class Entrance extends React.Component {
           <div className="title mb10">QUIZZLY</div>
           <div className="subtitle mb20">The scholastic environment where clickers don't exist</div>
           <img className="logo mb20" src={Utility.LOGO_IMAGE_PATH} />
-          <div className="loginForm" onSubmit={this.handleEntranceSubmit.bind(this)}>
+          <div className="loginForm">
             {isSignUpNewUser ? this.renderSignUpInputs() : null}
             {this.renderSignInInputs()}
             {isSignUpNewUser ? this.renderUserCheckBox() : null}
