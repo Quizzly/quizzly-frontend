@@ -19,7 +19,8 @@ export default class Entrance extends React.Component {
       email: "",
       password: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
+      status: "initial"
     };
   }
 
@@ -48,9 +49,8 @@ export default class Entrance extends React.Component {
     this.handleInputChange('lastName', value);
   }
 
-  handleEntranceSubmit(e) {
+  handleEntranceSubmit() {
     var st = this.state;
-    e.preventDefault();
     var firstName = "", lastName = "";
     var email = st.email.trim();
     var password = st.password.trim();
@@ -204,23 +204,25 @@ export default class Entrance extends React.Component {
     var isSignUpNewUser = !this.state.isSignIn;
     return (
       <div className="entranceContainer">
-        <div className="centerBlock alignC" style={{"paddingTop": "5%"}}>
+        <div className="innerEntranceContainer">
           <div className="title mb10">QUIZZLY</div>
           <div className="subtitle mb20">The scholastic environment where clickers don't exist</div>
           <img className="logo mb20" src={Utility.LOGO_IMAGE_PATH} />
-          <form className="loginForm" onSubmit={this.handleEntranceSubmit.bind(this)}>
+          <div className="loginForm" onSubmit={this.handleEntranceSubmit.bind(this)}>
             {isSignUpNewUser ? this.renderSignUpInputs() : null}
             {this.renderSignInInputs()}
             {isSignUpNewUser ? this.renderUserCheckBox() : null}
-            <input type="submit" value={isSignUpNewUser ? "SIGN UP" : "SIGN IN"} className="signButton" />
-          </form>
-          <div className="subsubtitle">Or switch to&nbsp;
-            <a href="#" className="bold" onClick={this.swapEntryType.bind(this)}>{isSignUpNewUser ? "sign in" : "sign up" }</a>
-            &nbsp;or&nbsp;
-            <a href="#" className="bold">sign in with Blackboard</a>
+            <div className="signButton">
+              {isSignUpNewUser ? "SIGN UP" : "SIGN IN"}
+            </div>
           </div>
+          <div className="subsubtitle">Or switch to&nbsp;
+            <a className="bold pointer" onClick={this.swapEntryType.bind(this)}>{isSignUpNewUser ? "sign in" : "sign up" }</a>
+            {/*&nbsp;or&nbsp;*/}
+            {/*<a href="#" className="bold">sign in with Blackboard</a>*/}
+          </div>
+          {/*<a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>*/}
         </div>
-        <a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>
       </div>
     )
   }

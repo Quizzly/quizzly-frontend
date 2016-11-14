@@ -3,6 +3,14 @@
 .entranceContainer {
   text-align: center;
   @include gradientBody;
+  // position: fixed;
+
+  .innerEntranceContainer {
+    @include greenBlueGradient;
+    padding: 40px 0;
+    @include centerBlock;
+    text-align: center;
+  }
 
   .title {
     @include mont;
@@ -40,6 +48,7 @@
     background: none;
     background-color: none;
     border: none;
+    cursor: pointer;
     &:hover {
       text-decoration: underline;
     }
