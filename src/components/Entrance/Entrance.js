@@ -4,6 +4,7 @@ import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
 import Socket from 'modules/Socket.js'
+import StringValidator from 'modules/StringValidator.js'
 
 export default class Entrance extends React.Component {
   static propTypes = {
@@ -19,7 +20,8 @@ export default class Entrance extends React.Component {
       email: "",
       password: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
+      status: "initial"
     };
   }
 
@@ -48,13 +50,14 @@ export default class Entrance extends React.Component {
     this.handleInputChange('lastName', value);
   }
 
-  handleEntranceSubmit(e) {
+  handleEntranceSubmit() {
+    this.setState({status: "pending"});
     var st = this.state;
-    e.preventDefault();
     var firstName = "", lastName = "";
     var email = st.email.trim();
     var password = st.password.trim();
     if (!password || !email) {
+      this.setState({status: "initial"});
       return;
     }
     if(st.isSignIn) {
@@ -82,6 +85,7 @@ export default class Entrance extends React.Component {
       })
       .fail((err) => {
         alert("Sign in failed!");
+        this.setState({status: "initial"});
         console.log(err);
       });
     } else {
@@ -90,9 +94,14 @@ export default class Entrance extends React.Component {
       var isProfessor = st.isProfessor;
 
       if (!firstName || !lastName) {
+        this.setState({status: "initial"});
         return;
       }
-
+      if(!StringValidator.isEmail(email)){
+        this.setState({status: "initial"});
+        alert("Please enter a valid email address.")
+        return;
+      }
       Api.db.post('signup', {
         email: email,
         password: password,
@@ -115,6 +124,7 @@ export default class Entrance extends React.Component {
       })
       .fail((err) => {
         alert("Sign up failed!");
+        this.setState({status: "initial"});
         console.log(err);
       });
     }
@@ -129,6 +139,27 @@ export default class Entrance extends React.Component {
     var isProfessor = e.target.checked;
     console.log("isProfessor", isProfessor);
     this.setState({isProfessor: isProfessor});
+  }
+
+  chooseSignButtonText() {
+    const {
+      isSignIn,
+      status
+    } = this.state;
+
+    if(isSignIn) {
+      if(status == "pending") {
+        return "SIGNING IN...";
+      } else {
+        return "SIGN IN";
+      }
+    } else {
+      if(status == "pending") {
+        return "SIGNING UP...";
+      } else {
+        return "SIGN UP";
+      }
+    }
   }
 
   renderSignUpInputs() {
@@ -204,23 +235,29 @@ export default class Entrance extends React.Component {
     var isSignUpNewUser = !this.state.isSignIn;
     return (
       <div className="entranceContainer">
-        <div className="centerBlock alignC" style={{"paddingTop": "5%"}}>
+        <div className="innerEntranceContainer">
           <div className="title mb10">QUIZZLY</div>
           <div className="subtitle mb20">The scholastic environment where clickers don't exist</div>
           <img className="logo mb20" src={Utility.LOGO_IMAGE_PATH} />
-          <form className="loginForm" onSubmit={this.handleEntranceSubmit.bind(this)}>
+          <div className="loginForm">
             {isSignUpNewUser ? this.renderSignUpInputs() : null}
             {this.renderSignInInputs()}
             {isSignUpNewUser ? this.renderUserCheckBox() : null}
-            <input type="submit" value={isSignUpNewUser ? "SIGN UP" : "SIGN IN"} className="signButton" />
-          </form>
-          <div className="subsubtitle">Or switch to&nbsp;
-            <a href="#" className="bold" onClick={this.swapEntryType.bind(this)}>{isSignUpNewUser ? "sign in" : "sign up" }</a>
-            &nbsp;or&nbsp;
-            <a href="#" className="bold">sign in with Blackboard</a>
+            <button
+              className="signButton"
+              disabled={st.status == "pending" ? true : false}
+              onClick={this.handleEntranceSubmit.bind(this)}
+            >
+              {this.chooseSignButtonText()}
+            </button>
           </div>
+          <div className="subsubtitle">Or switch to&nbsp;
+            <a className="bold pointer" onClick={this.swapEntryType.bind(this)}>{isSignUpNewUser ? "sign in" : "sign up" }</a>
+            {/*&nbsp;or&nbsp;*/}
+            {/*<a href="#" className="bold">sign in with Blackboard</a>*/}
+          </div>
+          <a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>
         </div>
-        <a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>
       </div>
     )
   }
