@@ -7,6 +7,7 @@ export default class Quiz extends React.Component {
   static propTypes = {
     quiz: React.PropTypes.object.isRequired,
     quizIndex: React.PropTypes.number.isRequired,
+    duplicateQuizOnCourse: React.PropTypes.func.isRequired,
     deleteQuizFromCourse: React.PropTypes.func.isRequired,
     deleteQuestionFromQuiz: React.PropTypes.func.isRequired,
     showQuestionModal: React.PropTypes.func.isRequired,
@@ -40,7 +41,16 @@ export default class Quiz extends React.Component {
       </span>
     );
     header.push(
-      <span key={1}
+      <span
+        key={1}
+        className="duplicate pointer"
+        onClick={pr.duplicateQuizOnCourse.bind(this, pr.quizIndex)}
+      >
+        Duplicate
+      </span>
+    );
+    header.push(
+      <span key={2}
         className="floatR pointer"
         onClick={pr.deleteQuizFromCourse.bind(this, pr.quizIndex)}
       >

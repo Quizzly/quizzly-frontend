@@ -187,7 +187,17 @@ export default class Quizzes extends React.Component {
       question: question.id
     });
   }
-
+  duplicateQuizOnCourse(quizIndex){
+    var me = this;
+    console.log("here");
+    console.log(this.state.quizzes[quizIndex]);
+    Api.db.post('quiz/duplicateQuiz', {
+      quiz: me.state.quizzes[quizIndex]
+    }).then(function(quiz){
+      console.log(quiz);
+      me.getQuizzesFromCourseId(me.props.course.id);
+    });
+  }
   deleteQuizFromCourse(quizIndex) {
     var quizzes = this.state.quizzes;
     Api.db.post('quiz/destroy/' + quizzes[quizIndex].id)
@@ -323,6 +333,7 @@ export default class Quizzes extends React.Component {
                 showQuestionInModal={this.showQuestionInModal.bind(this)}
                 showQuizModal={this.showQuizModal.bind(this)}
                 askQuestion={this.askQuestion.bind(this)}
+                duplicateQuizOnCourse={this.duplicateQuizOnCourse.bind(this)}
               />
             );
           }, this)}
