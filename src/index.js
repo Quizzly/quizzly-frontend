@@ -44,7 +44,7 @@ function checkSession(nextState, replace, callback) {
 
       Api.db.findOne(route, user.id)
       .then((user) => {
-        console.log("full user?", user);
+        // console.log("full user?", user);
         Session.user = user;
         callback();
         // console.log('Admin Login? ', Session.isAdmin());
