@@ -134,6 +134,27 @@ export default class Entrance extends React.Component {
     this.setState({isProfessor: isProfessor});
   }
 
+  chooseSignButtonText() {
+    const {
+      isSignUpNewUser,
+      status
+    } = this.state;
+
+    if(isSignUpNewUser) {
+      if(status == "pending") {
+        return "SIGNING UP...";
+      } else {
+        return "SIGN UP";
+      }
+    } else {
+      if(status == "pending") {
+        return "SIGNING IN...";
+      } else {
+        return "SIGN IN";
+      }
+    }
+  }
+
   renderSignUpInputs() {
     var st = this.state;
     return (
@@ -220,7 +241,7 @@ export default class Entrance extends React.Component {
               disabled={st.status == "pending" ? true : false}
               onClick={this.handleEntranceSubmit.bind(this)}
             >
-              {isSignUpNewUser ? "SIGN UP" : "SIGN IN"}
+              {this.chooseSignButtonText()}
             </button>
           </div>
           <div className="subsubtitle">Or switch to&nbsp;
