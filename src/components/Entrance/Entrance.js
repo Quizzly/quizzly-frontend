@@ -98,6 +98,7 @@ export default class Entrance extends React.Component {
         return;
       }
       if(!StringValidator.isEmail(email)){
+        this.setState({status: "initial"});
         alert("Please enter a valid email address.")
         return;
       }
