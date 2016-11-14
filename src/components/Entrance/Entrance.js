@@ -251,7 +251,7 @@ export default class Entrance extends React.Component {
             {/*&nbsp;or&nbsp;*/}
             {/*<a href="#" className="bold">sign in with Blackboard</a>*/}
           </div>
-          {/*<a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>*/}
+          <a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>
         </div>
       </div>
     )
