@@ -6,7 +6,7 @@ var io = sailsIOClient(socketIOClient);
 
 
 io.sails.url = Api.baseUrl;
-console.log('io.sails.url', io.sails.url);
+
 module.exports = {
     subscribeToSections: function() {
         io.socket.on('question', function gotQuestion (data) {

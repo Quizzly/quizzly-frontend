@@ -21,7 +21,7 @@ import Api from 'modules/Api.js'
 import Session from 'modules/Session.js'
 
 function checkSession(nextState, replace, callback) {
-  Api.server.post('session')
+  Api.db.post('auth/user')
   .then((user) => {
     console.log("trying to session", user);
     if(!user) { // if login fails
@@ -50,6 +50,13 @@ function checkSession(nextState, replace, callback) {
         // console.log('Admin Login? ', Session.isAdmin());
       });
     }
+  }).fail(() => {
+    console.log('fail');
+    replace({
+      pathname: '/entrance',
+      state: { nextPathname: nextState.location.pathname }
+    });
+    callback();
   });
 }
 
@@ -67,7 +74,6 @@ render((
       <Route path="p/lectures" component={Lectures} />
       <Route path="p/quizzes" component={Quizzes} />
       <Route path="p/metrics" component={Metrics} />
-      <Route path="p/download" component={Download} />
       <Route path="s/quizzes" component={StudentQuizzes} />
       <Route path="s/metrics" component={StudentMetrics} />
     </Route>
@@ -77,5 +83,6 @@ render((
     <Route path="/entrance" component={Entrance} />
     <Route path="/style" component={Style} />
     <Route path="/studentlist" component={StudentList} />
+    <Route path="/download" component={Download} />
   </Router>
 ), document.getElementById("quizzly"));

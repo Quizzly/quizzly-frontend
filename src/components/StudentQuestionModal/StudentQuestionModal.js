@@ -35,6 +35,34 @@ export default class StudentQuestionModal extends React.Component {
     }
   }
 
+  renderAnswerBody() {
+    var question = this.props.question;
+    var studentAnswer = this.state.studentAnswer;
+    switch(question.type) {
+      case "multipleChoice":
+        return question.answers.map((answer, answerIndex) => {
+              return (
+                  <div className="flex mb20 flexVertical" key={answerIndex}>
+                    <span className="mr15">{answer.option}.)</span>
+                    <Input
+                        type="text"
+                        className={`addCourseInput ${this.chooseAnswerStatus(answer)}`}
+                        value={answer.text}
+                        placeholder="Option..."
+                        disabled
+                    />
+                  </div>
+              );
+            });
+        break;
+      case "freeResponse":
+        return (
+            <p><b>Answer:</b> {studentAnswer.text}</p>
+        );
+        break;
+    }
+  }
+
   renderModalBody() {
     return (
       <div id="addQuestionBody">
@@ -48,20 +76,7 @@ export default class StudentQuestionModal extends React.Component {
               disabled
             />
           </div>
-          {this.props.question.answers.map((answer, answerIndex) => {
-            return (
-              <div className="flex mb20 flexVertical" key={answerIndex}>
-                <span className="mr15">{answer.option}.)</span>
-                <Input
-                  type="text"
-                  className={`addCourseInput ${this.chooseAnswerStatus(answer)}`}
-                  value={answer.text}
-                  placeholder="Option..."
-                  disabled
-                />
-              </div>
-            );
-          })}
+          {this.renderAnswerBody()}
         </div>
       </div>
     );
