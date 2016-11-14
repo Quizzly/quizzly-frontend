@@ -198,7 +198,6 @@ export default class Courses extends React.Component {
       this.closeModal();
     });
   }
-
   deleteSectionFromCourse(sectionIndex) {
     var sections = this.state.sections;
     if(sections[sectionIndex] == undefined) return $.when(null);

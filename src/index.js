@@ -74,7 +74,6 @@ render((
       <Route path="p/lectures" component={Lectures} />
       <Route path="p/quizzes" component={Quizzes} />
       <Route path="p/metrics" component={Metrics} />
-      <Route path="p/download" component={Download} />
       <Route path="s/quizzes" component={StudentQuizzes} />
       <Route path="s/metrics" component={StudentMetrics} />
     </Route>
@@ -84,5 +83,6 @@ render((
     <Route path="/entrance" component={Entrance} />
     <Route path="/style" component={Style} />
     <Route path="/studentlist" component={StudentList} />
+    <Route path="/download" component={Download} />
   </Router>
 ), document.getElementById("quizzly"));
