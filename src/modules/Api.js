@@ -2,11 +2,10 @@ var Url = require('./Url.js');
 
 // Let ajax use cookies
 $.ajaxSetup({
-    xhrFields: {
-      withCredentials: true
-    },
-    beforeSend: (xhr) -> xhr.setRequestHeader('Authorization', 'Basic username:password'),
-    crossDomain: true
+  xhrFields: {
+    withCredentials: true
+  },
+  crossDomain: true
 });
 
 class Route {
