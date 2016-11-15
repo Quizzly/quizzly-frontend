@@ -23,11 +23,20 @@ export default class Download extends React.Component {
     var pr = this.props;
     return (
       <div className="downloadContainer">
-        <div className="flexHorizontal">
-        <ul>
-          <li><a href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-OSX.zip">mac</a></li>
-          <li><a href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-win32-x64.zip">windows</a></li>
-        </ul>
+        <div className="innerDownloadContainer">
+          <h1 className="title">DOWNLOAD THE QUIZZLY CLIENT</h1>
+          <div className="downloadLinks">
+            <a
+              href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-OSX.zip"
+            >
+              MAC OSX
+            </a>
+            <a
+              href="https://s3-us-west-2.amazonaws.com/downloads-quizzly/Quizzly-win32-x64.zip"
+            >
+              WINDOWS
+            </a>
+          </div>
         </div>
       </div>
     )
