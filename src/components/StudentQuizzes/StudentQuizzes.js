@@ -40,17 +40,17 @@ export default class StudentQuizzes extends React.Component {
     }
     var quizIds = [];
     var studentAnswers = [];
-  
+
     var me = this;
-    var quizzes = [];
+    var all_quizzes = [];
     Api.db.find('quiz', {course: courseId}).then(function(quizzes){
       console.log(quizzes);
       return Promise.each(quizzes, function(quiz){
         return Api.db.post('studentanswer/getMetrics', {student: me.props.student.id, quiz: quiz.id}).then(function(metrics){
-          return quizzes.push(metrics);
+          return all_quizzes.push(metrics);
         });
       }).then(function(){
-        return me.setState({studentQuizzes: quizzes});
+        return me.setState({studentQuizzes: all_quizzes});
       });
     });
   }
