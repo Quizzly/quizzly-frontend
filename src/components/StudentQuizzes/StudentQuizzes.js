@@ -3,6 +3,7 @@ import StudentQuiz from 'StudentQuiz/StudentQuiz.js'
 import StudentQuestionModal from 'StudentQuestionModal/StudentQuestionModal.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
+var Promise = require('bluebird');
 
 export default class StudentQuizzes extends React.Component {
   static propTypes = {
@@ -34,58 +35,38 @@ export default class StudentQuizzes extends React.Component {
   }
 
   getQuizzesFromCourseId(courseId) {
-    // Api.db.find("quiz", { course: courseId })
-    // .then(function(studentQuizzes) {
-    //   console.log("studentQuizzes", studentQuizzes);
-    //   if(studentQuizzes == undefined) return; // if there are no courses, then there are no sections
-    //   me.setState({studentQuizzes: studentQuizzes});
-    // });
     if(this.props.student == undefined) {
       return;
     }
     var quizIds = [];
     var studentAnswers = [];
-    Api.db.find('studentanswer', {course: courseId, student: this.props.student.id})
-    .then((studentAnswersResponse) => {
-      // console.log("studentAnswers", studentAnswers);
-      studentAnswers = studentAnswersResponse;
-      studentAnswers.map((studentAnswer) => {
-        quizIds.push(studentAnswer.quiz.id);
-      });
-      console.log(quizIds);
-
-      quizIds = Utility.removeDuplicates(quizIds);
-      console.log(quizIds);
-      return Api.db.post('quiz/getQuizzesByQuizIds', {quizIds: quizIds});
-    })
-    .then((quizzes) => {
-      console.log("quizzes", quizzes);
-      console.log("studentAnswers", studentAnswers);
-      quizzes.map((quiz) => {
-        quiz.studentAnswers = [];
-        return quiz;
-      });
-
-      studentAnswers.map((studentAnswer) => {
-        quizzes.map((quiz) => {
-          if(studentAnswer.quiz.id == quiz.id) {
-            return quiz.studentAnswers.push(studentAnswer);
-          }
+  
+    var me = this;
+    var quizzes = [];
+    Api.db.find('quiz', {course: courseId}).then(function(quizzes){
+      console.log(quizzes);
+      return Promise.each(quizzes, function(quiz){
+        return Api.db.post('studentanswer/getMetrics', {student: me.props.student.id, quiz: quiz.id}).then(function(metrics){
+          return quizzes.push(metrics);
         });
+      }).then(function(){
+        return me.setState({studentQuizzes: quizzes});
       });
-      console.log("new quizzes", quizzes);
-      this.setState({studentQuizzes: quizzes});
     });
   }
 
   showModal(question) {
-    Api.db.findOne('question', question.id)
-    .then((question) => {
-      this.setState({
+    this.setState({
         showModal: true,
         modalQuestion: question
       });
-    });
+    // Api.db.findOne('question', question.id)
+    // .then((question) => {
+    //   this.setState({
+    //     showModal: true,
+    //     modalQuestion: question
+    //   });
+    // });
   }
 
   closeModal() {
@@ -93,6 +74,7 @@ export default class StudentQuizzes extends React.Component {
   }
 
   renderStudentQuizzes() {
+    console.log(this.state.studentQuizzes);
     return this.state.studentQuizzes.map((studentQuiz, i) => {
       return (
         <StudentQuiz
