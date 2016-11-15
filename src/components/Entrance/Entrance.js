@@ -172,6 +172,7 @@ export default class Entrance extends React.Component {
           type="text"
           placeholder="First name"
           value={st.firstName}
+          onEnter={this.handleEntranceSubmit.bind(this)}
           onChange={this.handleFirstNameChange.bind(this)}
         />
         <Input
@@ -180,6 +181,7 @@ export default class Entrance extends React.Component {
           type="text"
           placeholder="Last name"
           value={st.lastName}
+          onEnter={function(){}}
           onChange={this.handleLastNameChange.bind(this)}
         />
       </div>
@@ -196,6 +198,7 @@ export default class Entrance extends React.Component {
         type="text"
         placeholder="School email"
         value={this.state.email}
+        onEnter={function(){}}
         onChange={this.handleEmailChange.bind(this)}
       />
     );
@@ -208,6 +211,7 @@ export default class Entrance extends React.Component {
         type="password"
         placeholder="Password"
         value={this.state.password}
+        onEnter={this.handleEntranceSubmit.bind(this)}
         onChange={this.handlePasswordChange.bind(this)}
       />
     );
@@ -221,6 +225,7 @@ export default class Entrance extends React.Component {
         <input
           type="checkbox"
           className="mr10"
+          onEnter={this.handleEntranceSubmit.bind(this)}
           onChange={this.updateIsProfessor.bind(this)}
           checked={this.state.isProfessor}
         />

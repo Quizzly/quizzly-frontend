@@ -30,9 +30,9 @@ export default class StudentQuestion extends React.Component {
   render() {
     var st = this.state;
     var pr = this.props;
-    var status = "wrong";
-    if(pr.studentAnswer.answer == undefined || pr.studentAnswer.answer.correct) {
-      status = "correct";
+    var status = "correct";
+    if(pr.question.incorrect || pr.question.studentUnanswered) {
+      status = "wrong";
     }
 
     return (
@@ -40,9 +40,9 @@ export default class StudentQuestion extends React.Component {
         className={`studentQuestionContainer ${status} pointer`}
         onMouseEnter={this.mouseEnter.bind(this)}
         onMouseLeave={this.mouseLeave.bind(this)}
-        onClick={pr.showModal.bind(this, pr.studentAnswer.question)}
+        onClick={pr.showModal.bind(this, pr.question)}
       >
-        {pr.studentAnswer.question.text}
+        {pr.question.text}
       </div>
     )
   }
