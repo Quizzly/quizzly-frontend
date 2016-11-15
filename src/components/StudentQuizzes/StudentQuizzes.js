@@ -15,7 +15,7 @@ export default class StudentQuizzes extends React.Component {
     super(props);
 
     this.state = {
-      studentQuizzes: [{title: "", studentAnswers: [], course: 0, id: 0}],
+      studentQuizzes: [{title: "", questions: [], course: 0, id: 0}],
       showModal: false,
       modalQuestion: {answers: [], text: "", duration: 0},
       modalInfo: {
