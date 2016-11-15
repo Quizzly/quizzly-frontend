@@ -21,26 +21,15 @@ export default class StudentQuiz extends React.Component {
   componentDidMount() {
   }
 
-  calculateCorrectAnswers() {
-    var studentAnswers = this.props.studentQuiz.studentAnswers;
-    var numCorrect = 0;
-    studentAnswers.map((studentAnswer) => {
-      if(studentAnswer.answer == undefined || studentAnswer.answer.correct) {
-        numCorrect++;
-      }
-    });
-    return numCorrect;
-  }
-
   renderStudentAnswersToQuizzes() {
     var pr = this.props;
-    return pr.studentQuiz.studentAnswers.map((studentAnswer, i) => {
+    return pr.studentQuiz.questions.map((question, i) => {
       return (
         <StudentQuestion
           key={i}
           studentQuizIndex={pr.studentQuizIndex}
-          studentAnswerIndex={i}
-          studentAnswer={studentAnswer}
+          questionIndex={i}
+          question={question}
           showModal={pr.showModal.bind(this)}
         />
       );
@@ -49,7 +38,7 @@ export default class StudentQuiz extends React.Component {
 
   renderStudentScore() {
     return (
-      <div>{this.calculateCorrectAnswers() + "/" + this.props.studentQuiz.studentAnswers.length}</div>
+      <div>{this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size}</div>
     );
   }
 
@@ -58,7 +47,7 @@ export default class StudentQuiz extends React.Component {
     var pr = this.props;
     return (
       <Panel
-        header={<span className="pointer">{pr.studentQuiz.title}</span>}
+        header={<span className="pointer">{pr.studentQuiz.quiz}</span>}
         body={this.renderStudentAnswersToQuizzes()}
         footer={<div className="studentQuizFooter">{this.renderStudentScore()}</div>}
       />
