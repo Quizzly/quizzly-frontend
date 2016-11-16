@@ -238,16 +238,6 @@ export default class Layout extends React.Component {
   }
 
   componentDidMount() {
-    var me = this;
-    // this.initPush();
-    // this.checkSession()
-    // Api.db.findOne('professor', 1)
-    // .then((user) => {
-    //   //TODO: might not be able to be /PROFESSOR/find/:id
-    //   console.log("user", user);
-    //   return Api.db.findOne(user.type, 1)
-    // })
-    // .then((user) => {
     var user = Session.user;
     console.log('user', user);
     switch(user.type) {
