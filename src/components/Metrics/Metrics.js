@@ -14,7 +14,7 @@ export default class Metrics extends React.Component {
     console.log("props.course", props.course);
     this.state = {
       course: props.course,
-      sections: [],
+      sections: props.course.sections,
       students: [],
       quizzes: [],
       questions: [],
@@ -46,7 +46,6 @@ export default class Metrics extends React.Component {
   componentDidMount() {
     // console.log("in componentDidMount");
     this.populateDropdowns(this.props.course);
-    console.log("Course is " + this.props.course);
   }
 
   componentWillReceiveProps(newProps) {
@@ -60,7 +59,7 @@ export default class Metrics extends React.Component {
     if(course.id == -1) return;
     console.log("course.id: ", course.id);
     var me = this;
-    $.when( //What does this do?
+    $.when(
       Api.db.find('section', {course: course.id}),
       // Api.db.post('student/getStudentsByCourseId/' + course.id),
       Api.db.find('quiz', {course: course.id})
@@ -69,8 +68,7 @@ export default class Metrics extends React.Component {
       console.log(sections);
       // console.log("sections", sections);
       // console.log("students", students);
-      console.log("quizzes");
-      console.log(quizzes);
+      // console.log("quizzes", quizzes);
       me.setState({
         sections: sections[0],
         students: [],
@@ -188,7 +186,7 @@ export default class Metrics extends React.Component {
   }
 
   getMetrics() {
-    console.log("Getting metrics...");
+    console.log("getting metrics...");
     this.setState({
       canRender: true,
       renderedSection: this.state.selectedSection == -1 ? -1 : this.state.sections[this.state.selectedSection].id,
@@ -199,6 +197,8 @@ export default class Metrics extends React.Component {
   }
   renderMetricsData(){
     if(this.state.canRender){
+      console.log("can render");
+
       console.log(this.state.renderedSection);
       console.log(this.state.renderedStudent);
       console.log(this.state.renderedQuiz);
