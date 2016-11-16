@@ -4,6 +4,7 @@ import Input from 'elements/Input/Input.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
 import Socket from 'modules/Socket.js'
+import StringValidator from 'modules/StringValidator.js'
 
 export default class Entrance extends React.Component {
   static propTypes = {
@@ -56,6 +57,7 @@ export default class Entrance extends React.Component {
     var email = st.email.trim();
     var password = st.password.trim();
     if (!password || !email) {
+      this.setState({status: "initial"});
       return;
     }
     if(st.isSignIn) {
@@ -92,9 +94,14 @@ export default class Entrance extends React.Component {
       var isProfessor = st.isProfessor;
 
       if (!firstName || !lastName) {
+        this.setState({status: "initial"});
         return;
       }
-
+      if(!StringValidator.isEmail(email)){
+        this.setState({status: "initial"});
+        alert("Please enter a valid email address.")
+        return;
+      }
       Api.db.post('signup', {
         email: email,
         password: password,
@@ -136,21 +143,21 @@ export default class Entrance extends React.Component {
 
   chooseSignButtonText() {
     const {
-      isSignUpNewUser,
+      isSignIn,
       status
     } = this.state;
 
-    if(isSignUpNewUser) {
-      if(status == "pending") {
-        return "SIGNING UP...";
-      } else {
-        return "SIGN UP";
-      }
-    } else {
+    if(isSignIn) {
       if(status == "pending") {
         return "SIGNING IN...";
       } else {
         return "SIGN IN";
+      }
+    } else {
+      if(status == "pending") {
+        return "SIGNING UP...";
+      } else {
+        return "SIGN UP";
       }
     }
   }
@@ -165,6 +172,7 @@ export default class Entrance extends React.Component {
           type="text"
           placeholder="First name"
           value={st.firstName}
+          onEnter={this.handleEntranceSubmit.bind(this)}
           onChange={this.handleFirstNameChange.bind(this)}
         />
         <Input
@@ -173,6 +181,7 @@ export default class Entrance extends React.Component {
           type="text"
           placeholder="Last name"
           value={st.lastName}
+          onEnter={function(){}}
           onChange={this.handleLastNameChange.bind(this)}
         />
       </div>
@@ -189,6 +198,7 @@ export default class Entrance extends React.Component {
         type="text"
         placeholder="School email"
         value={this.state.email}
+        onEnter={function(){}}
         onChange={this.handleEmailChange.bind(this)}
       />
     );
@@ -201,6 +211,7 @@ export default class Entrance extends React.Component {
         type="password"
         placeholder="Password"
         value={this.state.password}
+        onEnter={this.handleEntranceSubmit.bind(this)}
         onChange={this.handlePasswordChange.bind(this)}
       />
     );
@@ -214,6 +225,7 @@ export default class Entrance extends React.Component {
         <input
           type="checkbox"
           className="mr10"
+          onEnter={this.handleEntranceSubmit.bind(this)}
           onChange={this.updateIsProfessor.bind(this)}
           checked={this.state.isProfessor}
         />
@@ -232,7 +244,7 @@ export default class Entrance extends React.Component {
           <div className="title mb10">QUIZZLY</div>
           <div className="subtitle mb20">The scholastic environment where clickers don't exist</div>
           <img className="logo mb20" src={Utility.LOGO_IMAGE_PATH} />
-          <div className="loginForm" onSubmit={this.handleEntranceSubmit.bind(this)}>
+          <div className="loginForm">
             {isSignUpNewUser ? this.renderSignUpInputs() : null}
             {this.renderSignInInputs()}
             {isSignUpNewUser ? this.renderUserCheckBox() : null}
@@ -249,7 +261,12 @@ export default class Entrance extends React.Component {
             {/*&nbsp;or&nbsp;*/}
             {/*<a href="#" className="bold">sign in with Blackboard</a>*/}
           </div>
-          {/*<a className="footer" onClick={() => browserHistory.push('/download')}>Download</a>*/}
+          <a
+            className="footer pointer"
+            onClick={() => browserHistory.push('/download')}
+          >
+            Download
+          </a>
         </div>
       </div>
     )

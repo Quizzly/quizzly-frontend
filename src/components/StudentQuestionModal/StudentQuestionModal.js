@@ -29,8 +29,7 @@ export default class StudentQuestionModal extends React.Component {
     if(answer.correct) {
       return "correctAnswer";
     }
-
-    if(this.state.studentAnswer.answer && answer.id == this.state.studentAnswer.answer.id) {
+    if(answer.studentSelectedIncorrect) {
       return "wrongAnswer";
     }
   }
@@ -57,7 +56,7 @@ export default class StudentQuestionModal extends React.Component {
         break;
       case "freeResponse":
         return (
-            <p><b>Answer:</b> {studentAnswer.text}</p>
+            <p><b>Answer:</b> {question.answerText}</p>
         );
         break;
     }
@@ -76,6 +75,7 @@ export default class StudentQuestionModal extends React.Component {
               disabled
             />
           </div>
+          <div>{this.props.question.studentUnanswered ? "Unanswered" : ""}</div>
           {this.renderAnswerBody()}
         </div>
       </div>
