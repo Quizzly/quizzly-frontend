@@ -119,15 +119,14 @@ export default class Quizzes extends React.Component {
     }
   }
 
-  updateQuestion(question, quizIndex, questionIndex) {
+  updateQuestion(newQuestion, quizIndex, questionIndex) {
+    var me = this;
     var quizzes = this.state.quizzes;
-    Api.db.update('question', question.id, {text: question.text, type: question.type, duration: question.duration})
+    Api.db.update('question', newQuestion.id, {text: newQuestion.text, type: newQuestion.type, duration: newQuestion.duration})
     .then((question) => {
       quizzes[quizIndex].questions[questionIndex] = question;
       this.setState({quizzes: quizzes});
-    })
-    .then(() => {
-      Promise.each(question.answers, function(answer) {
+      Promise.each(newQuestion.answers, function(answer) {
         if(answer.id == undefined && answer.text.length == 0) {
           return $.when(null);
         } else if(answer.id == undefined) {
@@ -135,7 +134,8 @@ export default class Quizzes extends React.Component {
         } else if(answer.text.length == 0) {
           return Api.db.post('answer/destroy/' + answer.id);
         } else {
-          return this.crudAnswer('update', answer, question);
+          console.log("here");
+          return me.crudAnswer('update', answer, question);
         }
       })
       .then(() => {
@@ -170,13 +170,13 @@ export default class Quizzes extends React.Component {
 
   crudAnswer(operation, answer, question) {
     var route = '';
-    route = operation == 'create' ? '/answer/create' : '/answer/update/' + answer.id;
+    route = operation == 'create' ? 'answer/create' : 'answer/update/' + answer.id;
     switch(operation) {
       case 'create':
-        route = '/answer/create';
+        route = 'answer/create';
         break;
       case 'update':
-        route = '/answer/update/' + answer.id;
+        route = 'answer/update/' + answer.id;
         break;
     }
     console.log("this is the route", route);
