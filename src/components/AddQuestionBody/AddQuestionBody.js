@@ -60,8 +60,10 @@ export default class AddQuestionBody extends React.Component {
     this.setState({question: question});
   }
 
-  handleDurationChange(value) {
-    var question = this.state.question;
+  handleDurationChange() {
+    const {timeLimit} = this.refs;
+    const value = timeLimit.value;
+    const question = this.state.question;
     question.duration = value;
     this.setState({question: question});
   }
@@ -76,8 +78,6 @@ export default class AddQuestionBody extends React.Component {
 
   addQuestion() {
     var answers = this.state.question.answers;
-    var option = String.fromCharCode(answers[answers.length - 1].option.charCodeAt() + 1);
-    var answer = {option: option, text: "", correct: false};
     answers.push(answer);
     this.setState({answers: answers});
   }
@@ -144,12 +144,13 @@ export default class AddQuestionBody extends React.Component {
         />
         <div className="nowrap mr10 ml10">Time Limit</div>
         <input
-          type="number"
-          className="normalInput alignC"
-          value={this.state.question.duration}
-          min="1"
-          onChange={this.handleDurationChange.bind(this)}
-          style={{maxWidth: "50px"}}
+            ref="timeLimit"
+            type="number"
+            className="normalInput alignC"
+            value={this.state.question.duration}
+            min="1"
+            onChange={this.handleDurationChange.bind(this)}
+            style={{maxWidth: "50px"}}
         />
       </div>
     );
