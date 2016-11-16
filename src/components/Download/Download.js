@@ -1,5 +1,6 @@
 import s from 'Download/Download.scss'
 import Api from 'modules/Api.js'
+import {browserHistory} from 'react-router'
 
 export default class Download extends React.Component {
   static propTypes = {
@@ -36,6 +37,12 @@ export default class Download extends React.Component {
             >
               WINDOWS
             </a>
+          </div>
+          <div
+            className="backButton"
+            onClick={() => {browserHistory.goBack()}}
+          >
+            &larr; Back
           </div>
         </div>
       </div>

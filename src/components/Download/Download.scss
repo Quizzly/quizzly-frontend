@@ -29,4 +29,11 @@
     margin: 0 10px;
     @include outerShadow;
   }
+
+  .backButton {
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin-top: 40px;
+  }
 }
