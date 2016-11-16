@@ -6,6 +6,7 @@ import ProfileModal from 'ProfileModal/ProfileModal.js'
 import Session from 'modules/Session.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
+import Socket from 'modules/Socket.js'
 
 export default class Layout extends React.Component {
   static propTypes = {
@@ -40,32 +41,6 @@ export default class Layout extends React.Component {
         id: -1
       }
     }
-  }
-
-  addPusherListener() {
-    var me = this;
-    var pusher = new Pusher('638c5913fb91435e1b42', {
-      encrypted: true
-    });
-
-    var channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
-      console.log("pusher data", data);
-      Api.db.findOne('section', data.sectionId)
-      .then(function(section) {
-        section.students.map(function(student) {
-          if(me.state.user.id == student.id) {
-            Api.db.find('studentanswer', {question: data.questionId, student: student.id})
-            .then(function(studentanswer) {
-              console.log(studentanswer);
-              if(studentanswer.length == 0) { // the student has not answered this question before
-                browserHistory.push('/s/question/' + data.questionId + "/" + data.sectionId);
-              }
-            });
-          }
-        });
-      });
-    });
   }
 
   getTermsFromCourses(courses) {
@@ -277,7 +252,7 @@ export default class Layout extends React.Component {
     console.log('user', user);
     switch(user.type) {
       case 'STUDENT':
-        this.addPusherListener();
+        Socket.subscribeToSections();
         var courseIds = [];
         user.sections.map((section) => {
           courseIds.push(section.course);
