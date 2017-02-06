@@ -45,7 +45,7 @@ export default class Metrics extends React.Component {
 
   componentDidMount() {
     // console.log("in componentDidMount");
-    // this.populateDropdowns(this.props.course);
+    this.populateDropdowns(this.props.course);
   }
 
   componentWillReceiveProps(newProps) {
