@@ -38,7 +38,7 @@ export default class StudentQuiz extends React.Component {
 
   renderStudentScore() {
     return (
-      <div>{this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size}</div>
+      <div>{this.props.studentQuiz.countCorrect ? this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size : "None"}</div>
     );
   }
 
