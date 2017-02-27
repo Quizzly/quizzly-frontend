@@ -36,7 +36,7 @@ export default class StudentQuiz extends React.Component {
     {
       pr.studentQuiz.questions.splice(indices[i], 1);
     }
-    
+
     return pr.studentQuiz.questions.map((question, i) => {
       return (
         <StudentQuestion
@@ -52,7 +52,7 @@ export default class StudentQuiz extends React.Component {
 
   renderStudentScore() {
     return (
-      <div>{this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size}</div>
+      <div>{this.props.studentQuiz.size ? this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size : "None"}</div>
     );
   }
 
