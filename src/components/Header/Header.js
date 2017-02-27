@@ -63,18 +63,19 @@ export default class Header extends React.Component {
   render() {
     var st = this.state;
     var pr = this.props;
+    ////////// + " (" + pr.course.sections[0].title +")"
     return (
       <div className="headerContainer">
         <div>
-          <select placeholder="Semester" value={st.term.id} className="dropdown ml10" onChange={this.changeTerm.bind(this)}>
+          <select value={st.term.id} className="dropdown ml10" onChange={this.changeTerm.bind(this)}>
             {st.terms.map(function(term, termIndex) {
               return <option key={termIndex} value={term.id}>{term.season.season + " " + term.year.year}</option>
             })}
           </select>
-          <select placeholder="Class" value={st.course.id} className="dropdown ml10" onChange={this.changeCourse.bind(this)}>
+          <select value={st.course.id} className="dropdown ml10" onChange={this.changeCourse.bind(this)}>
             {st.courses.map(function(course, courseIndex) {
               if(course.term == st.term.id) {
-                return <option key={courseIndex} value={course.id}>{course.title + " (" + pr.course.sections[0].title +")"}</option>
+                return <option key={courseIndex} value={course.id}>{course.title}</option>
               }
             }, this)}
           </select>
@@ -87,3 +88,4 @@ export default class Header extends React.Component {
     )
   }
 }
+
