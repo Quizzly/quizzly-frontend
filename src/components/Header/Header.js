@@ -1,5 +1,6 @@
 import s from 'Header/Header.scss'
 import {browserHistory} from 'react-router'
+import Entrance from 'Entrance/Entrance.js'
 
 export default class Header extends React.Component {
   static propTypes = {

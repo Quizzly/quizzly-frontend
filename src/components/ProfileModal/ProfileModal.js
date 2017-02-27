@@ -72,6 +72,7 @@ export default class ProfileModal extends React.Component {
       pr.closeModal();
     });
   }
+// 
 
   renderUserIdInput() {
     var st = this.state;
@@ -80,7 +81,7 @@ export default class ProfileModal extends React.Component {
         return <Input
           type="text"
           className="mb20"
-          value={st.user.studentId ? st.user.studentId : "No ID"}
+          value={st.user.studentId}
           placeholder="ID"
           onChange={this.studentIdChange.bind(this)}
         />;
@@ -88,7 +89,7 @@ export default class ProfileModal extends React.Component {
       return <Input
         type="text"
         className="mb20"
-        value={st.user.facultyId ? st.user.studentId : "No ID"}
+        value={st.user.facultyId} 
         placeholder="ID"
         onChange={this.facultyIdChange.bind(this)}
       />;

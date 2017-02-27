@@ -231,7 +231,6 @@ export default class Entrance extends React.Component {
       </div>
     );
   }
-
   render() {
     var st = this.state;
     var pr = this.props;
