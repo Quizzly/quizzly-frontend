@@ -83,8 +83,8 @@ function chooseUrl(routeType){
 }
 
 var Api = module.exports = {
-  server: new Route(""),
-  db: new Route(window.location.port == '4000' ? 'http://localhost:1337' : 'https://quizzly-backend-prod.herokuapp.com'),
+  server: new Route(window.location.port == '4000' ? 'http://localhost:1337' : 'http://52.41.106.241:1337'),
+  db: new Route(window.location.port == '4000' ? 'http://localhost:1337' : 'http://52.41.106.241:1337'),
   otherDb: new Route(chooseUrl("redPay")),
-  baseUrl:  window.location.port == '4000' ? 'http://localhost:1337' : 'https://quizzly-backend-prod.herokuapp.com',
+  baseUrl:  window.location.port == '4000' ? 'http://localhost:1337' : 'http://52.41.106.241:1337',
 }

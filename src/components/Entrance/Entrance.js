@@ -108,7 +108,7 @@ export default class Entrance extends React.Component {
         isProfessor: isProfessor
       })
       .then((user) => {
-        return Api.server.post('login', user);
+        return Api.server.post('auth/user', user);
       })
       .then((user) => {
         console.log("User is logged in", user);
