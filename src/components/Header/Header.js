@@ -1,5 +1,6 @@
 import s from 'Header/Header.scss'
 import {browserHistory} from 'react-router'
+import Entrance from 'Entrance/Entrance.js'
 
 export default class Header extends React.Component {
   static propTypes = {
@@ -16,6 +17,7 @@ export default class Header extends React.Component {
       courses: props.courses,
       sections: props.course.sections,
     };
+    
   }
 
   componentDidMount() {
@@ -61,6 +63,7 @@ export default class Header extends React.Component {
   render() {
     var st = this.state;
     var pr = this.props;
+    ////////// + " (" + pr.course.sections[0].title +")"
     return (
       <div className="headerContainer">
         <div>
@@ -85,3 +88,4 @@ export default class Header extends React.Component {
     )
   }
 }
+

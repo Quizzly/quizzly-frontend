@@ -1,5 +1,6 @@
 import s from 'Sidebar/Sidebar.scss'
 import {browserHistory} from 'react-router'
+import Utility from 'modules/Utility.js'
 
 export default class Sidebar extends React.Component {
   static propTypes = {

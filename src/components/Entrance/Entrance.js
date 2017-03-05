@@ -121,7 +121,7 @@ export default class Entrance extends React.Component {
         browserHistory.push(route);
       })
       .fail((err) => {
-        alert("Sign up failed!");
+        alert("Sign up failed! This email already exists. Pleast try again");
         this.setState({status: "initial"});
         console.log(err);
       });
@@ -231,7 +231,6 @@ export default class Entrance extends React.Component {
       </div>
     );
   }
-
   render() {
     var st = this.state;
     var pr = this.props;

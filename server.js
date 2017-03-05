@@ -45,8 +45,11 @@ app.post('/login', function(req, res) {
 
 app.post('/logout', function(req, res) {
   req.session.destroy(function() {
+    console.log("good logout");
+    req.session = null;
     res.json({success: "good logout"});
   });
+  
 });
 
 app.post('/session', function(req, res) {

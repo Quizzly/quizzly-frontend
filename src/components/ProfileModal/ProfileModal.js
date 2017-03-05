@@ -88,7 +88,7 @@ export default class ProfileModal extends React.Component {
       return <Input
         type="text"
         className="mb20"
-        value={st.user.facultyId ? st.user.studentId : "No ID"}
+        value={st.user.facultyId ? st.user.facultyId : "No ID"}
         placeholder="ID"
         onChange={this.facultyIdChange.bind(this)}
       />;

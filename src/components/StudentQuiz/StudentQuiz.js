@@ -23,6 +23,20 @@ export default class StudentQuiz extends React.Component {
 
   renderStudentAnswersToQuizzes() {
     var pr = this.props;
+    var indices = [];
+
+    for (var i =0; i < pr.studentQuiz.questions.length; i++)
+    {
+      if (typeof pr.studentQuiz.questions[i].lastAsked == "undefined")
+      {
+        indices.push(i);
+      }
+    }
+    for (var i = indices.length - 1; i >=0; i--)
+    {
+      pr.studentQuiz.questions.splice(indices[i], 1);
+    }
+
     return pr.studentQuiz.questions.map((question, i) => {
       return (
         <StudentQuestion
@@ -38,7 +52,7 @@ export default class StudentQuiz extends React.Component {
 
   renderStudentScore() {
     return (
-      <div>{this.props.studentQuiz.countCorrect ? this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size : "None"}</div>
+      <div>{this.props.studentQuiz.size ? this.props.studentQuiz.countCorrect + "/" + this.props.studentQuiz.size : "None"}</div>
     );
   }
 
