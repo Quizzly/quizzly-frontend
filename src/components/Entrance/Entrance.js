@@ -62,11 +62,7 @@ export default class Entrance extends React.Component {
     if(st.isSignIn) {
       Api.db.post('login', {email: email, password: password})
       .then((user) => {
-        return Api.db.post('auth/user');
-      })
-      .then((user) => {
-        console.log("user1.5", user);
-        return Api.server.post('login', user);
+        return Api.db.post('auth/user', user);
       })
       .then((user) => {
         console.log("User is logged in", user);

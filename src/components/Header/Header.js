@@ -1,6 +1,7 @@
 import s from 'Header/Header.scss'
 import {browserHistory} from 'react-router'
 import Entrance from 'Entrance/Entrance.js'
+import Api from 'modules/Api.js'
 
 export default class Header extends React.Component {
   static propTypes = {
@@ -50,7 +51,7 @@ export default class Header extends React.Component {
   }
 
   handleLogout() {
-    $.post("/logout")
+    Api.server.post('logout')
     .then(function() {
       console.log("user successfully logged out");
       browserHistory.push('/entrance');
