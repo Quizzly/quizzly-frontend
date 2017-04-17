@@ -246,14 +246,10 @@ export default class Quizzes extends React.Component {
 
   askQuestion(quizIndex, questionIndex, sectionId) {
     var question = this.state.quizzes[quizIndex].questions[questionIndex];
-    question.lastAsked = new Date();
-    return Api.db.update('question', question.id, {lastAsked: new Date()})
+    return Api.db.post('question/ask/', {question: question.id, section: sectionId})
     .then(() => {
-      return Api.db.post('question/ask/', {question: question.id, section: sectionId})
-      .then(() => {
-        console.log("asked question success!");
-        return null;
-      });
+      console.log("asked question success!");
+      return null;
     });
   }
 

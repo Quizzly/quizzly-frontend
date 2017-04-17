@@ -27,7 +27,7 @@ export default class StudentQuiz extends React.Component {
 
     for (var i =0; i < pr.studentQuiz.questions.length; i++)
     {
-      if (typeof pr.studentQuiz.questions[i].lastAsked == "undefined")
+      if (pr.studentQuiz.questions[i].lastAsked == null)
       {
         indices.push(i);
       }

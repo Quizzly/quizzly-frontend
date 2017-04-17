@@ -69,14 +69,19 @@ export default class Header extends React.Component {
       <div className="headerContainer">
         <div>
           <select value={st.term.id} className="dropdown ml10" onChange={this.changeTerm.bind(this)}>
+            <option value="null"> No Term Selected </option>
             {st.terms.map(function(term, termIndex) {
               return <option key={termIndex} value={term.id}>{term.season.season + " " + term.year.year}</option>
             })}
           </select>
           <select value={st.course.id} className="dropdown ml10" onChange={this.changeCourse.bind(this)}>
+            <option value="null"> No Couse Selected </option>
             {st.courses.map(function(course, courseIndex) {
               if(course.term == st.term.id) {
                 return <option key={courseIndex} value={course.id}>{course.title}</option>
+              }
+              else {
+                return <option value="null">No Couses Added</option>
               }
             }, this)}
           </select>
