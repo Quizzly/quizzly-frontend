@@ -3,6 +3,7 @@ import StudentQuiz from 'StudentQuiz/StudentQuiz.js'
 import StudentQuestionModal from 'StudentQuestionModal/StudentQuestionModal.js'
 import Api from 'modules/Api.js'
 import Utility from 'modules/Utility.js'
+import {browserHistory} from 'react-router'
 var Promise = require('bluebird');
 
 export default class StudentQuizzes extends React.Component {
@@ -56,10 +57,15 @@ export default class StudentQuizzes extends React.Component {
   }
 
   showModal(question) {
-    this.setState({
+    var scope = this;
+    Api.db.post('question/getOpenQuestion/', {questionKey: question.id}).then((data) => {
+      browserHistory.push('/s/answer/question/' + question.id);
+    }).fail(function() {
+      scope.setState({
         showModal: true,
         modalQuestion: question
       });
+    });
     // Api.db.findOne('question', question.id)
     // .then((question) => {
     //   this.setState({
